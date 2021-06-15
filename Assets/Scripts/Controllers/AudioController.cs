@@ -35,7 +35,8 @@ public class AudioController : MonoBehaviour
         aud.playOnAwake = false;
     }
 
-    void PlaySound(string name)
+    // Accessible method to play a sound
+    public static void PlaySound(string name)
     {
         GameObject.Find(name).GetComponent<AudioSource>().Play();
     }
