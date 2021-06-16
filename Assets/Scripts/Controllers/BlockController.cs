@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockController : MonoBehaviour
+public class BlockController
 {
     private static Vector3 bumpUp = new Vector3(0f,0.25f,0f);
     private static Vector3 bumpDown = -bumpUp;
@@ -10,6 +10,7 @@ public class BlockController : MonoBehaviour
 
     public static IEnumerator HitBreakableBlock(Collision collision)
     {
+        Debug.Log("Breakable");
         if (PlayerController.state == "Small Mario")
         {
             float initialTime = Time.time;
@@ -25,6 +26,7 @@ public class BlockController : MonoBehaviour
 
     public static IEnumerator HitSingleCoinBlock(Collision collision)
     {
+        Debug.Log("Coin");
         float initialTime = Time.time;
         collision.transform.Translate(bumpUp);
         SpawnCoin();

@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
     // Movement Keys
+    [Header("Controls")]
     public KeyCode moveLeftKey = KeyCode.A;
     public KeyCode moveRightKey = KeyCode.D;
     public KeyCode jumpKey = KeyCode.Space;
@@ -12,6 +14,11 @@ public class PlayerController : MonoBehaviour
     public KeyCode fireKey = KeyCode.K;
     public KeyCode runKey = KeyCode.J;
 
+    [Header("Player Components")]
+    public Rigidbody rigidBody;
+    public Animator animator;
+    public BoxCollider boxCollider;
+    
     // Vectors for changing scale
     private Quaternion faceLeft = Quaternion.Euler(0f, 180f, 0f);
     private Quaternion faceRight = Quaternion.Euler(0f, 0f, 0f);
@@ -19,12 +26,11 @@ public class PlayerController : MonoBehaviour
     // Movement
     private float jumpVelocity = 5.5f, maxFallVelocity = -10f, jumpHeight, maxJumpHeight;
     private float runVelocity = 6f, maxRunVelocity = 10f;
-    private float storedDirection, slowDownDirection;
     private Vector3 yGravity = 5f * Physics.gravity;
     private Vector3 zeroGravity = 0f * Physics.gravity;
     private bool stopXVelocity, stopYVelocity;
     private bool isGrounded;
-    private bool isRunning, isRunningLeft, isRunningRight, isJumping, isCrouching, isInMotionX, isInMotionY;
+    private bool isRunning, isRunningLeft, isRunningRight, isJumping, isCrouching, isTurning, isInMotionX, isInMotionY;
     private bool queueFire;
     private bool hasBumped = false;
     private bool runToggle;
@@ -41,20 +47,20 @@ public class PlayerController : MonoBehaviour
 
     // For animation
     // static bool invincible = false;
+    private bool noInteraction;
 
     // For timing
-    float bumpTimer, bumpSeconds, bumpDuration;
+    float bumpTimer, bumpSeconds, bumpDuration = 1f;
 
-    // because I dont want to type get component
-    Rigidbody rb;
-    Animator anim;
-    BoxCollider bc;
+    // Loading resources
+    PhysicMaterial noFriction, playerFriction;
 
     private void Start()
     {
-        rb = transform.GetComponent<Rigidbody>();
-        anim = transform.GetComponent<Animator>();
-        bc = transform.GetComponentInChildren<BoxCollider>();
+        noFriction = (PhysicMaterial)Resources.Load("Materials/NoFriction",typeof(PhysicMaterial));
+        playerFriction = (PhysicMaterial)Resources.Load("Materials/PlayerFriction", typeof(PhysicMaterial));
+
+        if (SceneManager.GetActiveScene().name == "W1-L1") { state = "Small Mario"; }
 
         // Adjust gravity
         Physics.gravity = yGravity;
@@ -65,14 +71,11 @@ public class PlayerController : MonoBehaviour
     {
         CheckInputs();
 
-        // Update state of mario
-        UpdateState();
-
         // Movement
         Move();
 
         // Timers and such
-        jumpHeight = rb.worldCenterOfMass.y;
+        jumpHeight = rigidBody.worldCenterOfMass.y;
         if (hasBumped) { BumpSeconds(); }
 
         // Control parameters in information
@@ -85,7 +88,7 @@ public class PlayerController : MonoBehaviour
     // Check if moving
     void CheckInputs()
     {
-        // bool suburbia
+        // bool suburigidBodyia
         bool inputLeft = Input.GetKey(moveLeftKey);
         bool inputRight = Input.GetKey(moveRightKey);
         bool inputJump = Input.GetKey(jumpKey);
@@ -100,6 +103,7 @@ public class PlayerController : MonoBehaviour
         isJumping = inputJump;
         isCrouching = inputCrouch;
         queueFire = inputFire && isFire;
+        isTurning =  Mathf.Abs(rigidBody.velocity.x) > 2f && (Mathf.Sign(Input.GetAxisRaw("Horizontal")) != Mathf.Sign(rigidBody.velocity.x));
     }
 
     void UpdateState()
@@ -109,51 +113,55 @@ public class PlayerController : MonoBehaviour
         if (isFire) { state = "Fire Mario"; }
     }
 
-    // Set animations
+    // Set animatorations
     void Animate()
     {
         // The easy ones
-        anim.SetBool("_isRunning", isRunning);
-        anim.SetBool("_isJumping", isJumping);
+        animator.SetBool("_isRunning", isRunning);
+        animator.SetBool("_isJumping", isJumping);
+        animator.SetBool("_isTurning", isTurning);
+        
 
         // For controlling how fast the run animation is played
         float runSpeedMultiplier = 1f;
-        if (runSpeedMultiplier < Mathf.Abs(rb.velocity.x)) { runSpeedMultiplier = Mathf.Abs(rb.velocity.x); }
-        anim.SetFloat("_runSpeedMultiplier", runSpeedMultiplier);
+        if (runSpeedMultiplier < Mathf.Abs(rigidBody.velocity.x)) { runSpeedMultiplier = Mathf.Abs(rigidBody.velocity.x); }
+        animator.SetFloat("_runSpeedMultiplier", runSpeedMultiplier);
 
         // If velocity.x is not 0
-        if (rb.velocity.x != 0f) { isInMotionX = true; }
+        if (rigidBody.velocity.x != 0f) { isInMotionX = true; }
         else { isInMotionX = false; }
-        anim.SetBool("_isInMotionX", isInMotionX);
+        animator.SetBool("_isInMotionX", isInMotionX);
 
         // If velocity.y is not 0
-        if (rb.velocity.y != 0f) { isInMotionY = true; }
+        if (rigidBody.velocity.y != 0f) { isInMotionY = true; }
         else { isInMotionY = false; }
-        anim.SetBool("_isInMotionY", isInMotionY);
+        animator.SetBool("_isInMotionY", isInMotionY);
     }
 
     // Movement controller (check if key is pressed & does not equal previous move, if no key pressed move in same direction)
     void Move()
     {        
         // flip the sprite
-        if (bc != null)
-        {
-            if (isRunningLeft && transform.rotation != faceLeft) { transform.rotation = faceLeft; }
-            else if (isRunningRight && transform.rotation != faceRight) { transform.rotation = faceRight; }
-        }
+        if (isRunningLeft && transform.rotation != faceLeft) { transform.rotation = faceLeft; }
+        else if (isRunningRight && transform.rotation != faceRight) { transform.rotation = faceRight; }
 
         // Run detection
         Run();
 
-        // Slow down if no input
-        if (isGrounded && Input.GetAxisRaw("Horizontal") == 0f && rb.velocity.x != 0f)
-        {
-            if (Mathf.Sign(rb.velocity.x) == slowDownDirection ) { rb.AddForce(Vector2.right * storedDirection * runVelocity); }
-            else { rb.velocity = new Vector3(0f, rb.velocity.y, rb.velocity.z); }
-        }
+        // Add friction if no input and moving
+        if ((Mathf.Sign(rigidBody.velocity.x) != Mathf.Sign(Input.GetAxisRaw("Horizontal")) || Input.GetAxisRaw("Horizontal") == 0) && rigidBody.velocity.x != 0f) { boxCollider.material = playerFriction; }
+        else { boxCollider.material = noFriction; }
 
         // Jumping detection
         if (isGrounded) { isJumping = false; Jump(); }
+    }
+
+    // Run detection
+    void Run()
+    {
+        float direction = Input.GetAxisRaw("Horizontal");
+        if (runToggle) { direction *= 2; }
+        rigidBody.AddForce(Vector2.right * direction * runVelocity);
     }
 
     // Jump detection
@@ -166,29 +174,12 @@ public class PlayerController : MonoBehaviour
 
             // Disable gravity
             Physics.gravity = zeroGravity;
-            maxJumpHeight = rb.worldCenterOfMass.y + 4f;
+            maxJumpHeight = rigidBody.worldCenterOfMass.y + 4f;
             StartCoroutine(JumpTimer());
 
-            rb.velocity += new Vector3(0f,jumpVelocity,0f);
+            rigidBody.velocity += new Vector3(0f,jumpVelocity,0f);
         }  
-    }
-
-    // Run detection
-    void Run()
-    {
-        float direction = Input.GetAxisRaw("Horizontal");
-        
-        if (runToggle) { direction *= 2; }
-
-        // Getting slow down data
-        if (Input.GetKey(moveLeftKey) || Input.GetKey(moveRightKey))
-        {
-            storedDirection = -direction * 2;
-            if (Input.GetKey(moveLeftKey)) { slowDownDirection = -1f; }
-            if (Input.GetKey(moveRightKey)) { slowDownDirection = 1f; }
-        }
-        rb.AddForce(Vector2.right * direction * runVelocity);
-    }
+    }   
 
     // Reenable physics after duration
     IEnumerator JumpTimer()
@@ -201,9 +192,9 @@ public class PlayerController : MonoBehaviour
     // Easy fix for bad code
     void CapVelocity()
     {
-        if (rb.velocity.y < 0 && rb.velocity.y < maxFallVelocity) { rb.velocity = new Vector3(rb.velocity.x, maxFallVelocity, rb.velocity.z); }
-        if (rb.velocity.x > maxRunVelocity) { rb.velocity = new Vector3(maxRunVelocity, rb.velocity.y, rb.velocity.z); }
-        if (rb.velocity.x < -maxRunVelocity) { rb.velocity = new Vector3(-maxRunVelocity, rb.velocity.y, rb.velocity.z); }
+        if (rigidBody.velocity.y < 0 && rigidBody.velocity.y < maxFallVelocity) { rigidBody.velocity = new Vector3(rigidBody.velocity.x, maxFallVelocity, rigidBody.velocity.z); }
+        if (rigidBody.velocity.x > maxRunVelocity) { rigidBody.velocity = new Vector3(maxRunVelocity, rigidBody.velocity.y, rigidBody.velocity.z); }
+        if (rigidBody.velocity.x < -maxRunVelocity) { rigidBody.velocity = new Vector3(-maxRunVelocity, rigidBody.velocity.y, rigidBody.velocity.z); }
     }
 
     void Bump()
@@ -246,32 +237,40 @@ public class PlayerController : MonoBehaviour
     // Detect collisions
     private void OnCollisionEnter(Collision collision)
     {
+        // Get face of hit
         Vector2 direction = DetectCollisionSide(collision);
 
         // If you collide with side... 
         if (direction == Vector2.left || direction == Vector2.right)
         {
             // If in air, stop
-            if (rb.velocity.y != 0) { stopXVelocity = true; stopYVelocity = true; }
+            if (rigidBody.velocity.y != 0) { stopXVelocity = true; stopYVelocity = true; }
 
             // Play bump sound if on ground
-            if (rb.velocity.y == 0) { if (!hasBumped) { Bump(); } }
+            if (rigidBody.velocity.y == 0) { if (!hasBumped) { Bump(); } }
         }
 
         // If you hit block, stop jump
-        if (direction == Vector2.down) 
-        { 
-            stopYVelocity = true; 
+        if (direction == Vector2.down)
+        {
+            stopYVelocity = true;
             Bump();
-            if (collision.gameObject.tag == "Breakable Block") { BlockController.HitBreakableBlock(collision); }
+            if (collision.gameObject.tag == "Breakable Block")
+            {
+                StartCoroutine(BlockController.HitBreakableBlock(collision));
+            }
+            if (collision.gameObject.tag == "Single Coin Block")
+            {
+                StartCoroutine(BlockController.HitSingleCoinBlock(collision));
+            }
         }
 
         // determines if you can jump again
-        if (collision.transform.tag == "Floor") { isGrounded = true; }
+        if (direction == Vector2.up) { isGrounded = true; }
     }
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.transform.tag == "Floor") { isGrounded = false; }
+        if (rigidBody.velocity.y != 0f) { isGrounded = false; }
         stopXVelocity = false;
     }
 }

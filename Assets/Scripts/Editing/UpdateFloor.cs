@@ -5,8 +5,12 @@ using UnityEngine;
 [System.Serializable]
 public class UpdateFloor : MonoBehaviour
 {
-    [Range(1,20)]
-    public int x = 1, y = 1;
+    [Range(1, 100), Header("Dimensions")]
+    public int x = 1;
+    [Range(1,5)]
+    public int y = 1;
+
+    [Header("Objects")]
     public SpriteRenderer sprite;
     public BoxCollider bc;
 

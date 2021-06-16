@@ -5,9 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Lighting
-  - Floor
   - Breakable Block
   - Background
+  - Single Coin Block
+  - Overworld
   layers:
   - Default
   - TransparentFX
