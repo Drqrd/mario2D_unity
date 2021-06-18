@@ -8,19 +8,20 @@ public class BlockController
     private static Vector3 bumpDown = -bumpUp;
     private static float animationTime =.05f;
 
-    public static IEnumerator HitBreakableBlock(Collision collision)
+    public static IEnumerator HitBreakableBlock(int id, Collision collision)
     {
-        Debug.Log("Breakable");
+        Transform transform = collision.collider.transform.GetChild(id).transform;
         if (PlayerController.state == "Small Mario")
         {
             float initialTime = Time.time;
-            collision.transform.Translate(bumpUp);
+            transform.Translate(bumpUp);
             yield return new WaitUntil(() => Time.time > initialTime + animationTime);
-            collision.transform.Translate(bumpDown);
+            transform.Translate(bumpDown);
         }
         else
         {
-
+            transform.gameObject.SetActive(false);
+            transform.parent.GetComponent<UpdateInteractables>().NewColliders(id, collision);
         }
     }
 

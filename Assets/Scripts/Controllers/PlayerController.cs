@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
         noFriction = (PhysicMaterial)Resources.Load("Materials/NoFriction",typeof(PhysicMaterial));
         playerFriction = (PhysicMaterial)Resources.Load("Materials/PlayerFriction", typeof(PhysicMaterial));
 
-        if (SceneManager.GetActiveScene().name == "W1-L1") { state = "Small Mario"; }
+        if (SceneManager.GetActiveScene().name == "W1-L1") { state = "Large Mario"; }
 
         // Adjust gravity
         Physics.gravity = yGravity;
@@ -255,13 +255,9 @@ public class PlayerController : MonoBehaviour
         {
             stopYVelocity = true;
             Bump();
-            if (collision.gameObject.tag == "Breakable Block")
+            if (collision.gameObject.tag == "Interactables")
             {
-                StartCoroutine(BlockController.HitBreakableBlock(collision));
-            }
-            if (collision.gameObject.tag == "Single Coin Block")
-            {
-                StartCoroutine(BlockController.HitSingleCoinBlock(collision));
+                collision.gameObject.GetComponent<UpdateInteractables>().FindBlock(collision);
             }
         }
 

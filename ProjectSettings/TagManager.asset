@@ -4,11 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Lighting
-  - Breakable Block
-  - Background
-  - Single Coin Block
   - Overworld
+  - Background
+  - Breakable Block
+  - Interactables
   layers:
   - Default
   - TransparentFX
