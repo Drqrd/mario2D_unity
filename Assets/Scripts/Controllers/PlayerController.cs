@@ -40,17 +40,16 @@ public class PlayerController : MonoBehaviour
 
     // Other stuff like throwing fireballs or crouching
     // private bool powerUp = false;
-    private bool isSmall;
-    private bool isLarge;
-    private bool isFire;
+    private bool isSmall = true;
+    private bool isLarge = false;
+    private bool isFire = false;
 
 
     // For animation
     // static bool invincible = false;
-    private bool noInteraction;
 
     // For timing
-    float bumpTimer, bumpSeconds, bumpDuration = .2f;
+    private float bumpDuration = .2f;
 
     // Loading resources
     PhysicMaterial noFriction, playerFriction;
@@ -60,7 +59,7 @@ public class PlayerController : MonoBehaviour
         noFriction = (PhysicMaterial)Resources.Load("Materials/NoFriction",typeof(PhysicMaterial));
         playerFriction = (PhysicMaterial)Resources.Load("Materials/PlayerFriction", typeof(PhysicMaterial));
 
-        if (SceneManager.GetActiveScene().name == "W1-L1") { state = "Small Mario"; }
+        if (SceneManager.GetActiveScene().name == "W1-L1") { SetState("Small Mario"); }
 
         // Adjust gravity
         Physics.gravity = yGravity;
@@ -70,6 +69,8 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         CheckInputs();
+
+        UpdateState();
 
         // Movement
         Move();
@@ -110,6 +111,14 @@ public class PlayerController : MonoBehaviour
         if (isSmall) { state = "Small Mario"; }
         if (isLarge) { state = "Large Mario"; }
         if (isFire) { state = "Fire Mario"; }
+    }
+
+    void SetState(string state)
+    {
+        if (state == "Small Mario") { isSmall = true; isLarge = false; isFire = false; }
+        else if (state == "Large Mario") { isSmall = false; isLarge = true; isFire = false; }
+        else if (state == "Fire Mario") { isSmall = false; isLarge = false; isFire = true; }
+        else { Debug.Log("ERR: Cannot set this state: " + state); }
     }
 
     // Set animatorations
@@ -171,6 +180,7 @@ public class PlayerController : MonoBehaviour
             // Play jump sound
             AudioController.PlaySound("Jump-Super");
 
+            
             // Disable gravity
             Physics.gravity = zeroGravity;
             maxJumpHeight = rigidBody.worldCenterOfMass.y + 4f;
@@ -203,6 +213,11 @@ public class PlayerController : MonoBehaviour
         hasBumped = false;
     }
 
+    private void Bounce()
+    {
+        rigidBody.velocity = new Vector3(rigidBody.velocity.x, 10f, 0f);
+    }
+
     // Detects collision side, only for collision enter
     Vector2 DetectCollisionSide(Collision col)
     {
@@ -221,6 +236,7 @@ public class PlayerController : MonoBehaviour
     // Detect collisions
     private void OnCollisionEnter(Collision collision)
     {
+        string tag = collision.gameObject.tag;
         // Get face of hit
         Vector2 direction = DetectCollisionSide(collision);
 
@@ -238,7 +254,7 @@ public class PlayerController : MonoBehaviour
         if (direction == Vector2.down)
         {
             stopYVelocity = true;
-            if (collision.gameObject.tag == "BlockColliders" && !hasBumped)
+            if (tag == "BlockColliders" && !hasBumped)
             {
                 collision.transform.parent.parent.GetComponent<UpdateInteractables>().FindBlock(collision);
                 StartCoroutine(BumpTimer());
@@ -246,7 +262,14 @@ public class PlayerController : MonoBehaviour
         }
 
         // determines if you can jump again
-        if (direction == Vector2.up) { isGrounded = true; }
+        if (direction == Vector2.up) 
+        { 
+            isGrounded = true;
+            if (tag == "Enemy")
+            {
+                if (collision.gameObject.name.Contains("Goomba")) { StartCoroutine(collision.gameObject.GetComponent<Goomba>().DeathTimer()); Bounce(); }
+            }
+        }
     }
     private void OnCollisionExit(Collision collision)
     {

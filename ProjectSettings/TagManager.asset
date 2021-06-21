@@ -10,6 +10,7 @@ TagManager:
   - Interactables
   - Single Coin Block
   - BlockColliders
+  - Enemy
   layers:
   - Default
   - TransparentFX
