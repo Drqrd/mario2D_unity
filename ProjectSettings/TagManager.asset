@@ -8,6 +8,8 @@ TagManager:
   - Background
   - Breakable Block
   - Interactables
+  - Single Coin Block
+  - BlockColliders
   layers:
   - Default
   - TransparentFX

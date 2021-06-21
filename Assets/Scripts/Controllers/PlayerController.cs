@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
     private bool noInteraction;
 
     // For timing
-    float bumpTimer, bumpSeconds, bumpDuration = 1f;
+    float bumpTimer, bumpSeconds, bumpDuration = .2f;
 
     // Loading resources
     PhysicMaterial noFriction, playerFriction;
@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
         noFriction = (PhysicMaterial)Resources.Load("Materials/NoFriction",typeof(PhysicMaterial));
         playerFriction = (PhysicMaterial)Resources.Load("Materials/PlayerFriction", typeof(PhysicMaterial));
 
-        if (SceneManager.GetActiveScene().name == "W1-L1") { state = "Large Mario"; }
+        if (SceneManager.GetActiveScene().name == "W1-L1") { state = "Small Mario"; }
 
         // Adjust gravity
         Physics.gravity = yGravity;
@@ -76,7 +76,6 @@ public class PlayerController : MonoBehaviour
 
         // Timers and such
         jumpHeight = rigidBody.worldCenterOfMass.y;
-        if (hasBumped) { BumpSeconds(); }
 
         // Control parameters in information
         Animate();
@@ -197,26 +196,11 @@ public class PlayerController : MonoBehaviour
         if (rigidBody.velocity.x < -maxRunVelocity) { rigidBody.velocity = new Vector3(-maxRunVelocity, rigidBody.velocity.y, rigidBody.velocity.z); }
     }
 
-    void Bump()
-    {
-        AudioController.PlaySound("Bump");
-        hasBumped = true;
-        StartCoroutine(BumpTimer());
-    }
-
     IEnumerator BumpTimer()
     {
-        yield return new WaitUntil(() => bumpSeconds >= bumpDuration);
+        hasBumped = true;
+        yield return new WaitForSeconds(bumpDuration);
         hasBumped = false;
-        bumpTimer = 0f;
-        bumpSeconds = 0f;
-    }
-
-    // for determining if you can play bump sound again
-    void BumpSeconds()
-    {
-        bumpTimer += Time.time;
-        bumpSeconds = bumpTimer % 60f;
     }
 
     // Detects collision side, only for collision enter
@@ -247,17 +231,17 @@ public class PlayerController : MonoBehaviour
             if (rigidBody.velocity.y != 0) { stopXVelocity = true; stopYVelocity = true; }
 
             // Play bump sound if on ground
-            if (rigidBody.velocity.y == 0) { if (!hasBumped) { Bump(); } }
+            if (rigidBody.velocity.y == 0) { if (!hasBumped) { AudioController.PlaySound("Bump"); StartCoroutine(BumpTimer()); } }
         }
 
         // If you hit block, stop jump
         if (direction == Vector2.down)
         {
             stopYVelocity = true;
-            Bump();
-            if (collision.gameObject.tag == "Interactables")
+            if (collision.gameObject.tag == "BlockColliders" && !hasBumped)
             {
-                collision.gameObject.GetComponent<UpdateInteractables>().FindBlock(collision);
+                collision.transform.parent.parent.GetComponent<UpdateInteractables>().FindBlock(collision);
+                StartCoroutine(BumpTimer());
             }
         }
 

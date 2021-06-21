@@ -10,6 +10,9 @@ public class UpdateFloor : MonoBehaviour
     [Range(1,5)]
     public int y = 1;
 
+    [Header("Updating In Editor")]
+    public bool update = false;
+
     [Header("Objects")]
     public SpriteRenderer sprite;
     public BoxCollider bc;
@@ -19,7 +22,10 @@ public class UpdateFloor : MonoBehaviour
     void OnValidate() { UnityEditor.EditorApplication.delayCall += _OnValidate; }
     void _OnValidate()
     {
-        UpdateObject();
+        if (update)
+        {
+            UpdateObject();
+        }
     }
     #endif
 
