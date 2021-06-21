@@ -5,6 +5,12 @@ TextureImporter:
   - first:
       213: -3944233756665241597
     second: Mushroom_OW_0
+  - first:
+      213: 7108301791295852798
+    second: Mushroom_OW_1
+  - first:
+      213: -5622722420165929987
+    second: Mushroom_OW_2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -126,10 +132,52 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Mushroom_OW_1
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 1
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef0567a51d2c5a260800000000000000
+      internalID: 7108301791295852798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mushroom_OW_2
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 1
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df39263dfb318f1b0800000000000000
+      internalID: -5622722420165929987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 6d198fcce39763340ab8e8202bb24d8c
+    spriteID: 07f72656643dcc648b08c143764adb3f
     internalID: 0
     vertices: []
     indices: 

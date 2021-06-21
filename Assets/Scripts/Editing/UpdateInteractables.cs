@@ -9,14 +9,35 @@ public class UpdateInteractables : MonoBehaviour
     [Range(X_MIN, X_MAX)]
     public int x = 1;
 
+    /*
     public GameObject initialSprite;
-    public bool update = false;
     public bool newObject = true;
+    */
+    public bool update = false;
+
 
     private PhysicMaterial bcMaterial;
 
+    private void OnValidate()
+    {
+        if (update)
+        {
+            update = false;
+            transform.Find("Colliders").transform.Find("Collider").GetComponent<BoxCollider>().size = new Vector3(transform.Find("Sprites").transform.childCount, 1f, 1f);
+        }
+    }
+
+    private void Start()
+    {
+        transform.Find("Colliders").transform.Find("Collider").GetComponent<BoxCollider>().size = new Vector3(transform.Find("Sprites").transform.childCount, 1f, 1f);
+    }
+
+    /// <summary>
+    /// ALL BELOW COMMENTED OUT WAS FOR EDITOR TESTING
+    /// </summary>
+    /*
     // Update when object is changed in editor
-#if UNITY_EDITOR
+    #if UNITY_EDITOR
     void OnValidate() { UnityEditor.EditorApplication.delayCall += _OnValidate; }
     void _OnValidate()
     {
@@ -30,7 +51,7 @@ public class UpdateInteractables : MonoBehaviour
             IEditorUpdateBoxColliders();
         }
     }
-#endif
+    #endif
 
     private void Start()
     {
@@ -116,6 +137,7 @@ public class UpdateInteractables : MonoBehaviour
         foreach (Transform child in t) { if (child.gameObject.activeSelf) { num++; } }
         return num;
     }
+    */
 
     public void FindBlock(Collision collision)
     {
