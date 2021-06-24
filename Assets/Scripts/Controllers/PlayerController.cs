@@ -24,9 +24,9 @@ public class PlayerController : MonoBehaviour
     private Quaternion faceRight = Quaternion.Euler(0f, 0f, 0f);
 
     // Movement
-    private float jumpVelocity = 5.5f, maxFallVelocity = -10f, jumpHeight, maxJumpHeight;
+    private float jumpVelocity = 20f, maxYVelocity = 20f, jumpHeight, maxJumpHeight;
     private float runVelocity = 6f, maxRunVelocity = 10f;
-    private Vector3 yGravity = 5f * Physics.gravity;
+    private Vector3 yGravity = 4.5f * Physics.gravity;
     private Vector3 zeroGravity = 0f * Physics.gravity;
     private bool stopXVelocity, stopYVelocity;
     private bool isGrounded;
@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     private bool queueFire;
     private bool hasBumped = false;
     private bool runToggle;
+    private bool isColliding;
 
     // State of mario
     public static string state;
@@ -65,9 +66,12 @@ public class PlayerController : MonoBehaviour
         Physics.gravity = yGravity;
     }
 
+
     // Physics based movement
     private void FixedUpdate()
     {
+        if (Input.GetKeyDown(KeyCode.P)) { Debug.Log(isGrounded); }
+
         CheckInputs();
 
         UpdateState();
@@ -153,6 +157,7 @@ public class PlayerController : MonoBehaviour
         if (isRunningLeft && transform.rotation != faceLeft) { transform.rotation = faceLeft; }
         else if (isRunningRight && transform.rotation != faceRight) { transform.rotation = faceRight; }
 
+
         // Run detection
         Run();
 
@@ -176,34 +181,20 @@ public class PlayerController : MonoBehaviour
     void Jump()
     { 
         if (Input.GetKey(KeyCode.Space))
-        {   
+        {
             // Play jump sound
             AudioController.PlaySound("Jump-Super");
-
-            
-            // Disable gravity
-            Physics.gravity = zeroGravity;
-            maxJumpHeight = rigidBody.worldCenterOfMass.y + 4f;
-            StartCoroutine(JumpTimer());
-
             rigidBody.velocity += new Vector3(0f,jumpVelocity,0f);
         }  
     }   
 
-    // Reenable physics after duration
-    IEnumerator JumpTimer()
-    {
-        yield return new WaitUntil(() => !Input.GetKey(KeyCode.Space) || jumpHeight > maxJumpHeight || stopYVelocity);
-        Physics.gravity = yGravity;
-        stopYVelocity = false;
-    }
-
     // Easy fix for bad code
     void CapVelocity()
     {
-        if (rigidBody.velocity.y < 0 && rigidBody.velocity.y < maxFallVelocity) { rigidBody.velocity = new Vector3(rigidBody.velocity.x, maxFallVelocity, rigidBody.velocity.z); }
+        if (rigidBody.velocity.y < 0 && rigidBody.velocity.y < -maxYVelocity) { rigidBody.velocity = new Vector3(rigidBody.velocity.x, -maxYVelocity, rigidBody.velocity.z); }
         if (rigidBody.velocity.x > maxRunVelocity) { rigidBody.velocity = new Vector3(maxRunVelocity, rigidBody.velocity.y, rigidBody.velocity.z); }
         if (rigidBody.velocity.x < -maxRunVelocity) { rigidBody.velocity = new Vector3(-maxRunVelocity, rigidBody.velocity.y, rigidBody.velocity.z); }
+        if (rigidBody.velocity.y > 0 && rigidBody.velocity.y > maxYVelocity) { rigidBody.velocity = new Vector3(rigidBody.velocity.x, maxYVelocity, rigidBody.velocity.z); }
     }
 
     IEnumerator BumpTimer()
@@ -254,8 +245,10 @@ public class PlayerController : MonoBehaviour
         if (direction == Vector2.down)
         {
             stopYVelocity = true;
+            isColliding = true;
             if (tag == "BlockColliders" && !hasBumped)
             {
+                Debug.Log("Player Collided");
                 collision.transform.parent.parent.GetComponent<UpdateInteractables>().FindBlock(collision);
                 StartCoroutine(BumpTimer());
             }
@@ -267,12 +260,20 @@ public class PlayerController : MonoBehaviour
             isGrounded = true;
             if (tag == "Enemy")
             {
-                if (collision.gameObject.name.Contains("Goomba")) { StartCoroutine(collision.gameObject.GetComponent<Goomba>().DeathTimer()); Bounce(); }
+                if (collision.gameObject.name.Contains("Goomba"))
+                {
+                    StartCoroutine(collision.gameObject.GetComponent<Goomba>().DeathTimer());
+                    if (Input.GetKey(jumpKey)) { Jump(); }
+                    else { Bounce(); }
+                }
             }
         }
     }
+
+    // says isGrounded is false to make sure you cant jump
     private void OnCollisionExit(Collision collision)
     {
+        isColliding = false;
         if (rigidBody.velocity.y != 0f) { isGrounded = false; }
         stopXVelocity = false;
     }

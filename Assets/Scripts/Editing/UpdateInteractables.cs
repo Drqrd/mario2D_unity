@@ -24,6 +24,7 @@ public class UpdateInteractables : MonoBehaviour
         {
             update = false;
             transform.Find("Colliders").transform.Find("Collider").GetComponent<BoxCollider>().size = new Vector3(transform.Find("Sprites").transform.childCount, 1f, 1f);
+            UpdateTheSprites();
         }
     }
 
@@ -138,6 +139,19 @@ public class UpdateInteractables : MonoBehaviour
         return num;
     }
     */
+    /// <summary>
+    /// END OF EDITOR TESTING STUFF
+    /// </summary>
+
+    void UpdateTheSprites()
+    {
+        Transform sprites = transform.Find("Sprites");
+        for (int i = 0; i < sprites.childCount; i++)
+        {
+            GameObject obj = sprites.GetChild(i).gameObject;
+            obj.transform.localPosition = new Vector3(i - (sprites.childCount / 2f) + 0.5f, 0f, 0f);
+        }
+    }
 
     public void FindBlock(Collision collision)
     {
@@ -146,7 +160,7 @@ public class UpdateInteractables : MonoBehaviour
         float smallestDist = Vector3.Distance(sprites.GetChild(0).position, collisionPos);
         int id = 0;
 
-        for (int i = 1; i < X_MAX; i++)
+        for (int i = 1; i < transform.Find("Sprites").childCount; i++)
         {
             if (sprites.GetChild(i).gameObject.activeSelf)
             {
@@ -157,12 +171,9 @@ public class UpdateInteractables : MonoBehaviour
                 }
             }
         }
-
+        Debug.Log("Is Hitting");
         Transform child = sprites.GetChild(id);
-        if (child.tag == "Breakable Block")
-        {
-            StartCoroutine(child.GetComponent<BreakableBlock>().Hit(collision));
-        }
+        StartCoroutine(child.GetComponent<IInterface>().Hit(collision));
     }
 
     // If hit end of box collider. adjust size and position
