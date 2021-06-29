@@ -171,7 +171,6 @@ public class UpdateInteractables : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Is Hitting");
         Transform child = sprites.GetChild(id);
         StartCoroutine(child.GetComponent<IInterface>().Hit(collision));
     }

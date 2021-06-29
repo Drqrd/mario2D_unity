@@ -9,7 +9,7 @@ public class BreakableBlock : MonoBehaviour, IInterface
     private static float animationTime = .05f;
     public IEnumerator Hit(Collision collision)
     { 
-        if (PlayerController.state == "Small Mario")
+        if (GameObject.Find("Player").GetComponent<PlayerController>().GetState() == "Small Mario")
         {
             AudioController.PlaySound("Bump");
             float initialTime = Time.time;

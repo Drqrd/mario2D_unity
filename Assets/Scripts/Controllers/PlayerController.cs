@@ -37,17 +37,17 @@ public class PlayerController : MonoBehaviour
     private bool isColliding;
 
     // State of mario
-    public static string state;
+    private string state;
 
     // Other stuff like throwing fireballs or crouching
     // private bool powerUp = false;
     private bool isSmall = true;
     private bool isLarge = false;
     private bool isFire = false;
-
-
-    // For animation
-    // static bool invincible = false;
+    private bool toLarge = false;
+    private bool toFire = false;
+    private bool isInvincible = false;
+    private float powerUpTime = 1f;
 
     // For timing
     private float bumpDuration = .2f;
@@ -117,12 +117,13 @@ public class PlayerController : MonoBehaviour
         if (isFire) { state = "Fire Mario"; }
     }
 
-    void SetState(string state)
+    public void SetState(string state)
     {
-        if (state == "Small Mario") { isSmall = true; isLarge = false; isFire = false; }
-        else if (state == "Large Mario") { isSmall = false; isLarge = true; isFire = false; }
-        else if (state == "Fire Mario") { isSmall = false; isLarge = false; isFire = true; }
+        if (state == "Small Mario") { isSmall = true; isLarge = false; isFire = false;}
+        else if (state == "Large Mario") { isSmall = false; isLarge = true; isFire = false;}
+        else if (state == "Fire Mario") { isSmall = false; isLarge = false; isFire = true;}
         else { Debug.Log("ERR: Cannot set this state: " + state); }
+        PowerUp();
     }
 
     // Set animatorations
@@ -132,7 +133,9 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("_isRunning", isRunning);
         animator.SetBool("_isJumping", isJumping);
         animator.SetBool("_isTurning", isTurning);
-        
+        animator.SetBool("_toLarge", toLarge);
+        animator.SetBool("_toFire", toFire);
+        animator.SetBool("_isInvincible", isInvincible);
 
         // For controlling how fast the run animation is played
         float runSpeedMultiplier = 1f;
@@ -209,6 +212,33 @@ public class PlayerController : MonoBehaviour
         rigidBody.velocity = new Vector3(rigidBody.velocity.x, 10f, 0f);
     }
 
+    private IEnumerator PowerUp()
+    {
+        float time = Time.time;
+        if (isLarge)
+        {
+            Vector3 previousVelocity = rigidBody.velocity;
+            rigidBody.isKinematic = true;
+            toLarge = true;
+            yield return new WaitUntil(() => Time.time >= time + powerUpTime);
+            toLarge = false;
+            rigidBody.isKinematic = false;
+            rigidBody.velocity = previousVelocity;
+
+        }
+        else if (isFire)
+        {
+            yield return new WaitUntil(() => Time.time >= time + powerUpTime);
+        }
+
+        yield return new WaitForSeconds(0f);
+    }
+
+    public string GetState()
+    {
+        return state;
+    }
+
     // Detects collision side, only for collision enter
     Vector2 DetectCollisionSide(Collision col)
     {
@@ -248,7 +278,6 @@ public class PlayerController : MonoBehaviour
             isColliding = true;
             if (tag == "BlockColliders" && !hasBumped)
             {
-                Debug.Log("Player Collided");
                 collision.transform.parent.parent.GetComponent<UpdateInteractables>().FindBlock(collision);
                 StartCoroutine(BumpTimer());
             }
