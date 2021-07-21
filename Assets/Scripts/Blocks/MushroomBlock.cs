@@ -2,35 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MushroomBlock : MonoBehaviour, IInterface
+public class MushroomBlock : PowerupBlock, BlockInterface
 {
-    private static Vector3 bumpUp = new Vector3(0f, 0.25f, 0f);
-    private Vector3 bumpDown = -bumpUp;
-    private float animationTime = .05f;
-    private bool shroomed = false;
-    private Sprite hitSprite;
-
-    private void Start()
+    // Causes hit and spawns powerup
+    new public void Hit(Collision collision)
     {
-        hitSprite = (Sprite)Resources.Load("Sprites/Hit_OW", typeof(Sprite));
+        if (!GetFirstHit())
+        {
+            SetFirstHit(true);
+            AudioController.PlaySound("Powerup Appears");
+            GetComponent<Animator>().enabled = false;
+            GetComponent<SpriteRenderer>().sprite = GetHitSprite();
+            StartCoroutine(Bump());
+            SpawnMushroom();
+        }
     }
 
-    public IEnumerator Hit(Collision collision)
+    public void SpawnMushroom()
     {
-        if (!shroomed)
-        {
-            shroomed = true;
-            AudioController.PlaySound("Bump");
-            AudioController.PlaySound("Powerup Appears");
-            float initialTime = Time.time;
-            GetComponent<Animator>().enabled = false;
-            GetComponent<SpriteRenderer>().sprite = hitSprite;
-            transform.Translate(bumpUp);
-            transform.GetChild(0).GetComponent<Mushroom>().StartShroom();
-
-            yield return new WaitUntil(() => Time.time > initialTime + animationTime);
-
-            transform.Translate(bumpDown);
-        }
+        transform.GetChild(0).GetComponent<PowerupInterface>().RevealPowerup();
     }
 }

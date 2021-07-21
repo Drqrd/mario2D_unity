@@ -2,43 +2,93 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mushroom : MonoBehaviour
+public class Mushroom : Powerup, PowerupInterface
 {
-    private Rigidbody rb;
-    private bool start = false;
-    private bool moving = false;
-    private float stopMovement;
     private float moveDirection;
-    private float moveSpeed = 2f;
+    private float moveSpeed = 3f;
+    private bool executedOnce = false;
+    private bool alreadyJumping = false;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, 0f);
-        stopMovement = transform.localPosition.y + 1f;
-        
+        // Set the rigidbody, collider and localPosition of the powerup
+        SetRigidbody(GetComponent<Rigidbody>());
+        SetBoxCollider(GetComponent<BoxCollider>());
+        SetTransform(transform);
+        SetEmergedPos(transform.localPosition.y + 1f);
+
+        // Hide the powerup behind the block
+        HidePowerup();
     }
 
     private void FixedUpdate()
     {
-        if (moving)
+        if (GetFinishedEmerging())
         {
-            rb.velocity = new Vector3(moveSpeed * moveDirection, rb.velocity.y, 0f);
+            if (!executedOnce) { InitialWork(); }
+            GetRigidbody().velocity = new Vector3(moveSpeed * moveDirection, GetRigidbody().velocity.y, 0f);
+        }
+
+        if (GetRigidbody().velocity.y == 0) { alreadyJumping = false; }
+    }
+    
+    public void RevealPowerup()
+    {
+        StartCoroutine(EmergeFromBlock());
+    }
+
+    public void HidePowerup()
+    {
+        transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, 1f);
+    }
+
+    public void InitialWork()
+    {
+        // Get initial moveDirection
+        moveDirection = Mathf.Sign(-transform.InverseTransformPoint(transform.localPosition).x - GameObject.Find("Player").transform.position.x);
+
+        // make position of powerup on z = 0 for proper collisions
+        transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, 0f);
+
+        // other stuff to do once position is corrected
+        GetBoxCollider().enabled = true;
+        GetRigidbody().useGravity = true;
+        SetFinishedEmerging(true);
+
+        executedOnce = true;
+    }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        moveDirection = -moveDirection;
+        if (collision.gameObject.name == "Player")
+        {
+            PlayerController reference = collision.transform.GetComponent<PlayerController>();
+
+            // Add to score
+            Score.AddScore(Score.GetCollectedPowerupPoints());
+
+            // Disable game object
+            transform.gameObject.SetActive(false);
+
+            // if small mario, make large mario
+            if (reference.GetState() == "Small Mario") { reference.SetState("Large Mario"); }
         }
     }
 
-    private void PlayAnimation()
+    public void OnCollisionStay(Collision collision)
     {
-        while (transform.localPosition.y < stopMovement)
+        if (collision.gameObject.name == "Collider") 
         {
-            rb.velocity = new Vector3(0f, 2f, 0f);
+            GameObject block = collision.transform.parent.parent.GetComponent<UpdateInteractables>().FindBlockForMushroom(collision);
+            if (block.GetComponent<BlockInterface>().GetIsBumping()) 
+            {
+                if (!alreadyJumping)
+                {
+                    alreadyJumping = true;
+                    GetRigidbody().velocity = new Vector3(GetRigidbody().velocity.x, 10f, 0f);
+                }
+            }
         }
-        moveDirection = Mathf.Sign(transform.InverseTransformPoint(transform.localPosition).x - GameObject.Find("Player").transform.position.x);
-        moving = true;
-    }
-
-    public void StartShroom()
-    {
-        if (!start) { start = true; PlayAnimation(); }
     }
 }

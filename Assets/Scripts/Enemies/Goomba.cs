@@ -8,8 +8,11 @@ public class Goomba : MonoBehaviour
     private Animator anim;
     private float moveSpeed = -1.5f;
     private float deathDuration = .2f;
-    private bool dying = false;
-    private bool isEnabled = false;
+    private bool dyingToStomp = false;
+    public bool dyingToFire= false;
+    private bool isEnabled = false, executedFireAnimation = false;
+    private const int fireScore = 100, stompScore = 200;
+
 
     private void Start()
     {
@@ -20,15 +23,28 @@ public class Goomba : MonoBehaviour
     {
         if (isEnabled)
         {
-            if (!dying) { rb.velocity = new Vector3(moveSpeed, rb.velocity.y, 0f); }
-            else { rb.velocity = Vector3.zero; }
-            SetAnimations();
+            if (!dyingToStomp && !dyingToFire) { rb.velocity = new Vector3(moveSpeed, rb.velocity.y, 0f); }
+            else if (dyingToStomp) { rb.velocity = Vector3.zero; DiedToStompAnimation(); }
+            else if (dyingToFire) { DiedToFireAnimation(); }
         }
     }
 
-    private void SetAnimations()
+    private void DiedToStompAnimation()
     {
-        anim.SetBool("_dying", dying);
+        anim.SetBool("_dying", dyingToStomp);
+    }
+
+    // Flip the goomba upside down, make it jump a little and turn off its collision
+    private void DiedToFireAnimation()
+    {
+        if (!executedFireAnimation)
+        {
+            executedFireAnimation = true;
+            transform.position = new Vector3(transform.position.x, transform.position.y, -1f);
+            rb.rotation = Quaternion.Euler(180f, 0f, 0f);
+            rb.velocity = new Vector3(0f, 10f, 0f);
+            GetComponent<BoxCollider>().enabled = false;
+        }   
     }
 
     public void Enable()
@@ -39,11 +55,29 @@ public class Goomba : MonoBehaviour
         }
     }
 
-    public IEnumerator DeathTimer()
+    public IEnumerator DeathTimer(string slainBy = "NaN")
     {
-        dying = true;
-        AudioController.PlaySound("Stomp");
-        yield return new WaitForSeconds(deathDuration);
-        gameObject.SetActive(false);
+        if (slainBy == "Stomp")
+        {
+            dyingToStomp = true;
+            AudioController.PlaySound("Stomp");
+            yield return new WaitForSeconds(deathDuration);
+            gameObject.SetActive(false);
+        }
+
+        else if (slainBy == "Fireball")
+        {
+            dyingToFire = true;
+            AudioController.PlaySound("Bump");
+            yield return new WaitForSeconds(deathDuration);
+            gameObject.SetActive(false);
+        }
+
+        // Disable if off screen to left or bottom
+        else
+        {
+            gameObject.SetActive(false);
+            yield break;
+        }
     }
 }

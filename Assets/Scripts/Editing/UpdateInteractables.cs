@@ -172,7 +172,28 @@ public class UpdateInteractables : MonoBehaviour
             }
         }
         Transform child = sprites.GetChild(id);
-        StartCoroutine(child.GetComponent<IInterface>().Hit(collision));
+        child.GetComponent<BlockInterface>().Hit(collision);
+    }
+
+    public GameObject FindBlockForMushroom(Collision collision)
+    {
+        Vector3 collisionPos = collision.contacts[0].point;
+        Transform sprites = transform.Find("Sprites").transform;
+        float smallestDist = Vector3.Distance(sprites.GetChild(0).position, collisionPos);
+        int id = 0;
+
+        for (int i = 1; i < transform.Find("Sprites").childCount; i++)
+        {
+            if (sprites.GetChild(i).gameObject.activeSelf)
+            {
+                if (Vector3.Distance(sprites.GetChild(i).position, collisionPos) < smallestDist)
+                {
+                    smallestDist = Vector3.Distance(sprites.GetChild(i).position, collisionPos);
+                    id = i;
+                }
+            }
+        }
+        return sprites.GetChild(id).gameObject;
     }
 
     // If hit end of box collider. adjust size and position

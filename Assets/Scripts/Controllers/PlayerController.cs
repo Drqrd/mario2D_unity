@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    private const int MAX_STOMP_MULTIPLIER = 9;
+
     // Movement Keys
     [Header("Controls")]
     public KeyCode moveLeftKey = KeyCode.A;
@@ -54,6 +56,8 @@ public class PlayerController : MonoBehaviour
 
     // Loading resources
     PhysicMaterial noFriction, playerFriction;
+
+    private int stompMultiplier;
 
     private void Start()
     {
@@ -291,11 +295,14 @@ public class PlayerController : MonoBehaviour
             {
                 if (collision.gameObject.name.Contains("Goomba"))
                 {
-                    StartCoroutine(collision.gameObject.GetComponent<Goomba>().DeathTimer());
+                    StartCoroutine(collision.gameObject.GetComponent<Goomba>().DeathTimer("Stomp"));
+                    Overlay.AddToScores(Score.GetStompedEnemyPoints(stompMultiplier));
+                    if (stompMultiplier < MAX_STOMP_MULTIPLIER) { stompMultiplier++; }
                     if (Input.GetKey(jumpKey)) { Jump(); }
                     else { Bounce(); }
                 }
             }
+            else { stompMultiplier = 0; }
         }
     }
 

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Interface with 
-public interface IInterface
+public interface BlockInterface
 {
-    IEnumerator Hit(Collision collision);
+    void Hit(Collision collision);
+
+    public bool GetIsBumping();
 }
