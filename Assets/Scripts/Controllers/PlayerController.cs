@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
         playerFriction = (PhysicMaterial)Resources.Load("Materials/PlayerFriction", typeof(PhysicMaterial));
 
         if (SceneManager.GetActiveScene().name == "W1-L1") { SetState("Small Mario"); }
-
+        SetState("Large Mario");
         // Adjust gravity
         Physics.gravity = yGravity;
     }

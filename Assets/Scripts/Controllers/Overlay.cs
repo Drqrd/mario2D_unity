@@ -80,7 +80,7 @@ public class Overlay : MonoBehaviour
         dimensions = Camera.main.pixelRect.size / 2f;
         offset = new Vector3(dimensions.x / 8f, -dimensions.y / 10f, 0f);
 
-        float xPos = Camera.main.pixelRect.size.x / 4f;
+        float xPos = Camera.main.pixelRect.size.x / 2f;
         score.rectTransform.localPosition += offset;
         coinSprite.rectTransform.localPosition += new Vector3(xPos - 32f, -32f) + offset;
         coins.rectTransform.localPosition += new Vector3(xPos, 0f) + offset;

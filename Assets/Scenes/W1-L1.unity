@@ -1370,7 +1370,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 20, z: 1}
+  m_Size: {x: 1, y: 24, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &1405733960
 Transform:
@@ -2181,6 +2181,10 @@ PrefabInstance:
       propertyPath: rightBounds
       value: 
       objectReference: {fileID: 1124779556}
+    - target: {fileID: 2036345675440453476, guid: 6c010e8d1adc467459de40dcc6dd1ffb, type: 3}
+      propertyPath: bottomBounds
+      value: 
+      objectReference: {fileID: 542495232}
     - target: {fileID: 2036345675440453477, guid: 6c010e8d1adc467459de40dcc6dd1ffb, type: 3}
       propertyPath: m_RootOrder
       value: 0
