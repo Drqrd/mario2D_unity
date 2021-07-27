@@ -6,6 +6,7 @@ public class CoinBlock : Block, BlockInterface
 {
     private Sprite hitSprite;
 
+    public GameObject child;
     private void Start()
     {
         hitSprite = (Sprite)Resources.Load("Sprites/Hit_OW", typeof(Sprite));
@@ -35,6 +36,6 @@ public class CoinBlock : Block, BlockInterface
     {
         // Add score
         Score.AddScore(Score.GetCollectedCoinPoints());
-
+        StartCoroutine(child.GetComponent<BlockCoin>().RevealCoin());
     }
 }
