@@ -6,6 +6,7 @@ public class BlockCoin : MonoBehaviour
 {
     private bool moveCoin = false;
     private float coinSpeed = .75f, maxTravelDist = 2.5f;
+    private float atEndDuration = .1f;
     private Vector3 startPos, endPos;
 
     private void Start()
@@ -27,6 +28,7 @@ public class BlockCoin : MonoBehaviour
         moveCoin = true;
         yield return new WaitUntil(() => transform.localPosition.y >= endPos.y);
         moveCoin = false;
+        yield return new WaitForSeconds(atEndDuration);
         transform.localPosition = startPos;
     }
 }

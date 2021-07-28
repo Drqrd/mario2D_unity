@@ -7,9 +7,6 @@ public class Score
     private static int score = 0;
 
     // All point values
-    private const int collectedPowerup = 1000;
-    private const int collectedCoin = 200; 
-    private const int brokeBrick = 50;
     private const int stompedLakitu = 800;
     private const int stompedHammerBro = 1000;
     private const int firedEnemy = 200;
@@ -27,21 +24,6 @@ public class Score
     public static int GetScore()
     {
         return score;
-    }
-
-    public static int GetCollectedPowerupPoints()
-    {
-        return collectedPowerup;
-    }
-
-    public static int GetCollectedCoinPoints()
-    {
-        return collectedCoin;
-    }
-
-    public static int GetBrokeBrickPoints()
-    {
-        return brokeBrick;
     }
 
     public static int GetStompedEnemyPoints(int i)

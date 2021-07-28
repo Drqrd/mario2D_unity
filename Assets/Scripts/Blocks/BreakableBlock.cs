@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class BreakableBlock : Block, BlockInterface
 {
-    
+
+    private const int blockScore = 50;
+
     // If hit a breakable block as small mario, bump it. Else, destroy it
     public void Hit(Collision collision)
     {
@@ -18,7 +20,7 @@ public class BreakableBlock : Block, BlockInterface
             transform.gameObject.SetActive(false);
 
             // Add score
-            Score.AddScore(Score.GetBrokeBrickPoints());
+            Score.AddScore(blockScore);
 
             AudioController.PlaySound("Break Block");
 

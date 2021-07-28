@@ -23,8 +23,11 @@ public class Goomba : MonoBehaviour
     {
         if (isEnabled)
         {
+            // If not dying, move left
             if (!dyingToStomp && !dyingToFire) { rb.velocity = new Vector3(moveSpeed, rb.velocity.y, 0f); }
+
             else if (dyingToStomp) { rb.velocity = Vector3.zero; DiedToStompAnimation(); }
+
             else if (dyingToFire) { DiedToFireAnimation(); }
         }
     }
@@ -79,5 +82,20 @@ public class Goomba : MonoBehaviour
             gameObject.SetActive(false);
             yield break;
         }
+    }
+
+    private bool SideCollision(Collision col)
+    {
+        float angle = Vector3.Angle(col.contacts[0].normal, Vector3.up);
+        if (Mathf.Approximately(angle, 90f))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (SideCollision(collision)) { moveSpeed = -moveSpeed; }
     }
 }

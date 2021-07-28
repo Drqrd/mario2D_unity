@@ -104,7 +104,7 @@ public class Overlay : MonoBehaviour
     // Updates the score in the overlay based on the scoreCount
     private void UpdateScores()
     {
-        score.text = "MARIO\n" + scoreCount.ToString("000000");
+        score.text = "MARIO\n" + Score.GetScore().ToString("000000");
     }
 
     // Updates the coin sprite in the overlay

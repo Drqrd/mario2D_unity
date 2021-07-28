@@ -11,6 +11,8 @@ public class Powerup : MonoBehaviour
     private bool finishedEmerging;
     private float emergedPos;
 
+    private const int powerupScore = 1000;
+
     // Default constructor automatically called by children
     public Powerup()
     {
@@ -61,5 +63,10 @@ public class Powerup : MonoBehaviour
     public void SetEmergedPos(float f)
     {
         emergedPos = f;
+    }
+
+    public int GetScore()
+    {
+        return powerupScore;
     }
 }

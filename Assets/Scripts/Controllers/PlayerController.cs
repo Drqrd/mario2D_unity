@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
         playerFriction = (PhysicMaterial)Resources.Load("Materials/PlayerFriction", typeof(PhysicMaterial));
 
         if (SceneManager.GetActiveScene().name == "W1-L1") { SetState("Small Mario"); }
-        SetState("Large Mario");
+
         // Adjust gravity
         Physics.gravity = yGravity;
     }
@@ -243,6 +243,21 @@ public class PlayerController : MonoBehaviour
         return state;
     }
 
+
+    private void DamageMario()
+    {
+        if (!isInvincible)
+        {
+            if (!isSmall) { SetState("Small Mario"); }
+            else { Death(); }
+        }
+    }
+
+    private void Death()
+    {
+        Debug.Log("Died");
+    }
+
     // Detects collision side, only for collision enter
     Vector2 DetectCollisionSide(Collision col)
     {
@@ -303,6 +318,11 @@ public class PlayerController : MonoBehaviour
                 }
             }
             else { stompMultiplier = 0; }
+        }
+
+        if (direction != Vector2.up)
+        {
+            if (tag == "Enemy") { DamageMario(); }
         }
     }
 

@@ -66,7 +66,7 @@ public class Mushroom : Powerup, PowerupInterface
             PlayerController reference = collision.transform.GetComponent<PlayerController>();
 
             // Add to score
-            Score.AddScore(Score.GetCollectedPowerupPoints());
+            Score.AddScore(GetScore());
 
             // Disable game object
             transform.gameObject.SetActive(false);
