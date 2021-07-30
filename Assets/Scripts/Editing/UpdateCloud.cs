@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UpdateCloud : MonoBehaviour
 {
-    private const int MAX_LENGTH = 3;
+    private const int MAX_LENGTH = 10;
 
     [Range(1, MAX_LENGTH), Header("Length Of Cloud")]
     public int length = 1;
@@ -12,10 +12,11 @@ public class UpdateCloud : MonoBehaviour
     private void OnValidate()
     {
         UpdateObject();
+        UpdateCollider();
     }
 
 
-    void UpdateObject()
+    private void UpdateObject()
     {
         // Updates end bits
         transform.Find("TopRight").localPosition = new Vector3(length, 1f, 0f);
@@ -34,6 +35,11 @@ public class UpdateCloud : MonoBehaviour
             transform.Find("TopMiddle " + i).localPosition = new Vector3(length - 1, 1f, i * .1f);
             transform.Find("BottomMiddle " + i).localPosition = new Vector3(length - 1, 0f, i * .1f);
         }
+
+    }
+
+    private void UpdateCollider()
+    {
 
     }
 }
