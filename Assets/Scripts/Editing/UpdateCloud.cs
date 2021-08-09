@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UpdateCloud : MonoBehaviour
 {
-    private const int MAX_LENGTH = 10;
+    private const int MAX_LENGTH = 3;
 
     [Range(1, MAX_LENGTH), Header("Length Of Cloud")]
     public int length = 1;
@@ -12,7 +12,6 @@ public class UpdateCloud : MonoBehaviour
     private void OnValidate()
     {
         UpdateObject();
-        UpdateCollider();
     }
 
 
@@ -29,17 +28,12 @@ public class UpdateCloud : MonoBehaviour
             transform.Find("BottomMiddle " + i).localPosition = new Vector3(i - 1, 0f, i * .1f);
         }
 
-        // Shrinks middle bushes
+        // Shrinks middle cloud stuff
         for (int i = length; i <= MAX_LENGTH; i++)
         {
             transform.Find("TopMiddle " + i).localPosition = new Vector3(length - 1, 1f, i * .1f);
             transform.Find("BottomMiddle " + i).localPosition = new Vector3(length - 1, 0f, i * .1f);
         }
-
-    }
-
-    private void UpdateCollider()
-    {
 
     }
 }
