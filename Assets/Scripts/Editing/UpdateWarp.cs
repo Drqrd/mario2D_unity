@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Warp : MonoBehaviour
+public class UpdateWarp : MonoBehaviour
 {
     private const float dist = 1.25f;
 
@@ -110,9 +110,11 @@ public class Warp : MonoBehaviour
         }
     }
 
-    private void UpdateOutDirection()
+    public string GetOutDirection()
     {
+        return outDirection;
     }
+
 
     private void ThrowLettersError()
     {

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8337337043042524014}
   - component: {fileID: 4129300374513820055}
-  - component: {fileID: 2489527479593544904}
   m_Layer: 0
   m_Name: Warp Out
   m_TagString: Untagged
@@ -84,19 +83,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!65 &2489527479593544904
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 977068330629969008}
-  m_Material: {fileID: 13400000, guid: 95c15183c357436419346b4806e6e867, type: 2}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.2857143, y: 1.2857143, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3368303108060394459
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,6 +152,7 @@ GameObject:
   - component: {fileID: 1080806540118587056}
   - component: {fileID: 8371207374493739260}
   - component: {fileID: 3258077985433526549}
+  - component: {fileID: 2412134379903508395}
   m_Layer: 0
   m_Name: Warp In
   m_TagString: Untagged
@@ -246,12 +233,24 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3881143322440356906}
-  m_Material: {fileID: 13400000, guid: fc536815d5bf16a438cd54713b77e598, type: 2}
+  m_Material: {fileID: 13400000, guid: 95c15183c357436419346b4806e6e867, type: 2}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.2857143, y: 1.2857143, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2412134379903508395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3881143322440356906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f48fea5c0e7a784fb22e0941b75b493, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4820252919763335240
 GameObject:
   m_ObjectHideFlags: 0

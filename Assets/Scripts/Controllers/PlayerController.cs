@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour
     private bool toLarge = false;
     private bool toFire = false;
     private bool isInvincible = false;
+    private bool isWarping = false;
     private float powerUpTime = 1f;
 
     // For timing
@@ -78,19 +79,22 @@ public class PlayerController : MonoBehaviour
 
         CheckInputs();
 
-        UpdateState();
+        if (!isWarping)
+        {
+            UpdateState();
 
-        // Movement
-        Move();
+            // Movement
+            Move();
 
-        // Timers and such
-        jumpHeight = rigidBody.worldCenterOfMass.y;
+            // Timers and such
+            jumpHeight = rigidBody.worldCenterOfMass.y;
 
-        // Control parameters in information
-        Animate();
+            // Control parameters in information
+            Animate();
 
-        // Speed cap
-        CapVelocity();
+            // Speed cap
+            CapVelocity();
+        }
     }
 
     // Check if moving
@@ -238,11 +242,80 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0f);
     }
 
+    public bool GetIsCrouching()
+    {
+        return isCrouching;
+    }
+
+    public IEnumerator Warp(Transform warp)
+    {
+        // Pause all player actions
+        isWarping = true;
+
+        // Disable velocity, gravity, and box collision
+        rigidBody.velocity = Vector3.zero;
+        rigidBody.useGravity = false;
+        boxCollider.enabled = false;
+
+        // Translate the player to center of warp point
+        transform.Translate(warp.position * Time.deltaTime);
+
+        // Wait until player is at position
+        yield return new WaitUntil(() => transform.position == warp.position);
+
+        // Play the pipe sound
+        AudioController.PlaySound("Pipe");
+
+        // Translate player into pipe
+        transform.Translate(new Vector3(transform.position.x,transform.position.y - 2f,transform.position.z) * Time.deltaTime);
+
+        // Get destination
+        Vector3 destination = warp.parent.GetChild(1).transform.position;
+
+        // Actually warp the player, depending on direction so player spawns in pipe
+        switch (warp.GetComponent<UpdateWarp>().GetOutDirection())
+        {
+            case "Up":
+                transform.position = new Vector3(destination.x, destination.y - 2f, destination.z);
+                break;
+
+            case "Down":
+                transform.position = new Vector3(destination.x, destination.y + 2f, destination.z);
+                break;
+
+            case "Left":
+                transform.position = new Vector3(destination.x + 2f, destination.y, destination.z);
+                break;
+
+            case "Right":
+                transform.position = new Vector3(destination.x - 2f, destination.y, destination.z);
+                break;
+
+            default:
+                Debug.Log("BROKEN BROKEN BROKEN BROKEN BROKEN!");
+                break;
+        }
+
+        // Play the sound again
+        AudioController.PlaySound("Pipe");
+
+        // Move out of pipe
+        transform.Translate(destination * Time.deltaTime);
+
+        yield return new WaitUntil(() => transform.position == destination);
+
+        // Enable rigidbody gravity, box collider
+        rigidBody.useGravity = true;
+        boxCollider.enabled = true;
+
+        // end warping
+        isWarping = false;
+    }
+
     public string GetState()
     {
         return state;
     }
-
 
     private void DamageMario()
     {
