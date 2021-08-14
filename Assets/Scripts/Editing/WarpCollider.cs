@@ -13,6 +13,6 @@ public class WarpCollider : MonoBehaviour
 
     private void OnTriggerStay(Collider col)
     {
-        if (col.gameObject == player.gameObject) { if (player.GetIsCrouching()) { player.Warp(transform); } }
+        if (col.gameObject == player.gameObject) { if (player.GetIsCrouching()) { StartCoroutine(player.Warp(transform)); } }
     }
 }

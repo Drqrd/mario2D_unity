@@ -2972,6 +2972,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1080806540118587056, guid: 861df915f3a5720409147cf0e197486f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2645725313770217866, guid: 861df915f3a5720409147cf0e197486f, type: 3}
+      propertyPath: inDirection
+      value: Down
+      objectReference: {fileID: 0}
     - target: {fileID: 3368303108060394459, guid: 861df915f3a5720409147cf0e197486f, type: 3}
       propertyPath: m_Name
       value: Warp
@@ -3019,6 +3027,10 @@ PrefabInstance:
     - target: {fileID: 7044720307726732846, guid: 861df915f3a5720409147cf0e197486f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8337337043042524014, guid: 861df915f3a5720409147cf0e197486f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.75
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6270372838267342527, guid: 861df915f3a5720409147cf0e197486f, type: 3}

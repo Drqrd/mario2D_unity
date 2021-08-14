@@ -54,6 +54,12 @@ public class PlayerController : MonoBehaviour
 
     // For timing
     private float bumpDuration = .2f;
+    private float warpSpeed = 1.5f;
+
+    // For warping in fixedUpdate
+    private Vector3 g_destination;
+    private bool adjustWarpPosition = false;
+    private Vector3 warpBoundsDim = new Vector3(.1f, .1f, .1f);
 
     // Loading resources
     PhysicMaterial noFriction, playerFriction;
@@ -95,6 +101,8 @@ public class PlayerController : MonoBehaviour
             // Speed cap
             CapVelocity();
         }
+
+        if (adjustWarpPosition) { WarpMovement(); }
     }
 
     // Check if moving
@@ -199,7 +207,7 @@ public class PlayerController : MonoBehaviour
         }  
     }   
 
-    // Easy fix for bad code
+    // Easy fix for bad code :)
     void CapVelocity()
     {
         if (rigidBody.velocity.y < 0 && rigidBody.velocity.y < -maxYVelocity) { rigidBody.velocity = new Vector3(rigidBody.velocity.x, -maxYVelocity, rigidBody.velocity.z); }
@@ -252,28 +260,34 @@ public class PlayerController : MonoBehaviour
         // Pause all player actions
         isWarping = true;
 
-        // Disable velocity, gravity, and box collision
+        // Velocity = 0, kinematic = true, and box collision
         rigidBody.velocity = Vector3.zero;
-        rigidBody.useGravity = false;
+        rigidBody.isKinematic = true;
         boxCollider.enabled = false;
 
-        // Translate the player to center of warp point
-        transform.Translate(warp.position * Time.deltaTime);
-
         // Wait until player is at position
-        yield return new WaitUntil(() => transform.position == warp.position);
+        g_destination = warp.position;
+        Bounds b = new Bounds(g_destination, warpBoundsDim);
+        adjustWarpPosition = true;
+        yield return new WaitUntil(() => b.Contains(rigidBody.position));
+        adjustWarpPosition = false;
 
         // Play the pipe sound
         AudioController.PlaySound("Pipe");
 
-        // Translate player into pipe
-        transform.Translate(new Vector3(transform.position.x,transform.position.y - 2f,transform.position.z) * Time.deltaTime);
+        // Go into pipe
+        g_destination = new Vector3(transform.position.x, transform.position.y - 2f, transform.position.z);
+        b = new Bounds(g_destination, warpBoundsDim);
+        adjustWarpPosition = true;
+        yield return new WaitUntil(() => b.Contains(rigidBody.position));
+        adjustWarpPosition = false;
 
+        // START HERE
         // Get destination
         Vector3 destination = warp.parent.GetChild(1).transform.position;
 
         // Actually warp the player, depending on direction so player spawns in pipe
-        switch (warp.GetComponent<UpdateWarp>().GetOutDirection())
+        switch (warp.parent.GetComponent<UpdateWarp>().GetOutDirection())
         {
             case "Up":
                 transform.position = new Vector3(destination.x, destination.y - 2f, destination.z);
@@ -304,12 +318,18 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitUntil(() => transform.position == destination);
 
-        // Enable rigidbody gravity, box collider
-        rigidBody.useGravity = true;
+        // Enable rigidbody and box collider
+        rigidBody.isKinematic = false;
         boxCollider.enabled = true;
 
         // end warping
         isWarping = false;
+    }
+
+    private void WarpMovement()
+    {
+        Vector3 direction = (g_destination - rigidBody.position).normalized;
+        rigidBody.MovePosition(rigidBody.position + direction * Time.deltaTime * warpSpeed);
     }
 
     public string GetState()
