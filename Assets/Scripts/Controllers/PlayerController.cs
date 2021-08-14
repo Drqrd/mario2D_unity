@@ -54,7 +54,8 @@ public class PlayerController : MonoBehaviour
 
     // For timing
     private float bumpDuration = .2f;
-    private float warpSpeed = 1.5f;
+    private float warpSpeed = 2.5f;
+    private float pauseBetweenWarps = 1f;
 
     // For warping in fixedUpdate
     private Vector3 g_destination;
@@ -282,7 +283,9 @@ public class PlayerController : MonoBehaviour
         yield return new WaitUntil(() => b.Contains(rigidBody.position));
         adjustWarpPosition = false;
 
-        // START HERE
+        // Time between pipe transition
+        yield return new WaitForSeconds(pauseBetweenWarps);
+
         // Get destination
         Vector3 destination = warp.parent.GetChild(1).transform.position;
 
@@ -290,19 +293,19 @@ public class PlayerController : MonoBehaviour
         switch (warp.parent.GetComponent<UpdateWarp>().GetOutDirection())
         {
             case "Up":
-                transform.position = new Vector3(destination.x, destination.y - 2f, destination.z);
+                rigidBody.position = new Vector3(destination.x, destination.y - 2f, destination.z);
                 break;
 
             case "Down":
-                transform.position = new Vector3(destination.x, destination.y + 2f, destination.z);
+                rigidBody.position = new Vector3(destination.x, destination.y + 2f, destination.z);
                 break;
 
             case "Left":
-                transform.position = new Vector3(destination.x + 2f, destination.y, destination.z);
+                rigidBody.position = new Vector3(destination.x + 2f, destination.y, destination.z);
                 break;
 
             case "Right":
-                transform.position = new Vector3(destination.x - 2f, destination.y, destination.z);
+                rigidBody.position = new Vector3(destination.x - 2f, destination.y, destination.z);
                 break;
 
             default:
@@ -313,10 +316,12 @@ public class PlayerController : MonoBehaviour
         // Play the sound again
         AudioController.PlaySound("Pipe");
 
-        // Move out of pipe
-        transform.Translate(destination * Time.deltaTime);
-
-        yield return new WaitUntil(() => transform.position == destination);
+        // exit pipe
+        g_destination = destination;
+        b = new Bounds(g_destination, warpBoundsDim);
+        adjustWarpPosition = true;
+        yield return new WaitUntil(() => b.Contains(rigidBody.position));
+        adjustWarpPosition = false;
 
         // Enable rigidbody and box collider
         rigidBody.isKinematic = false;

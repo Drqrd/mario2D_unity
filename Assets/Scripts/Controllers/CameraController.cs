@@ -70,6 +70,8 @@ public class CameraController : MonoBehaviour
         leftBounds.transform.position = new Vector3(transform.position.x - horizontalExtent / 2f - .5f, leftBounds.transform.position.y, 0f);
     }
 
+    
+
 
     // View boundary box
     private void OnDrawGizmos()
