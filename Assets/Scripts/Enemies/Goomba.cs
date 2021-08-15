@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Goomba : MonoBehaviour
+public class Goomba : MonoBehaviour, EnemyInterface
 {
     private Rigidbody rb;
     private Animator anim;
     private float moveSpeed = -1.5f;
     private float deathDuration = .2f;
     private bool dyingToStomp = false;
-    public bool dyingToFire= false;
+    private bool dyingToFire= false;
     private bool isEnabled = false, executedFireAnimation = false;
     private const int fireScore = 100, stompScore = 200;
-
 
     private void Start()
     {
@@ -54,7 +53,7 @@ public class Goomba : MonoBehaviour
     {
         if (!isEnabled)
         {
-           isEnabled = true;
+            isEnabled = true;
         }
     }
 
