@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    float cameraPos;
+    float cameraX;
+    float cameraY;
     bool[] children;
 
 
@@ -15,7 +16,9 @@ public class EnemyController : MonoBehaviour
     }
     private void Update()
     {
-        cameraPos = Camera.main.transform.position.x + Camera.main.orthographicSize * Screen.width / Screen.height - Camera.main.rect.x;
+        // Position of camera, enemies are activated when at camera bound
+        cameraX = Camera.main.transform.position.x + Camera.main.orthographicSize * Screen.width / Screen.height - Camera.main.rect.x;
+        cameraY = Camera.main.transform.position.y;
 
         EnableEnemies();
     }
@@ -27,9 +30,11 @@ public class EnemyController : MonoBehaviour
             if (children[i])
             {
                 Transform child = transform.GetChild(i);
-                if (child.localPosition.x < cameraPos && child.gameObject.activeSelf)
+                // if within x bound and is in same level   
+                if (child.localPosition.x < cameraX && child.localPosition.y < cameraY)
                 {
-                    if (child.name.Contains("Goomba")) { child.GetComponent<Goomba>().Enable(); children[i] = false; }
+                    child.GetComponent<EnemyInterface>().Enable();
+                    children[i] = false;
                 }
             }
         }
