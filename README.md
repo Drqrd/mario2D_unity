@@ -1,6 +1,7 @@
 <h1> New Super Mario Bros. Clone in Unity3d </h1>
 Author: Justin D'Errico  <br>
 Created: June, 2021 - Present <br>
+
 <h2> Goal </h2>
 The purpose of this project was to increase the complexity of the game from my first snake clone project. This was to develop my OOP skills, and make proper use of Unity3d components such as prefabs, animation clips, colliders, etc.
  
@@ -22,3 +23,10 @@ The current function names, cohesion and scope can use some improvements. Due to
 more time than what its worth, but I am keeping this in mind for future projects.
 <h3> Lack of Proper Documentation </h3>
 Like the previous flaw, I have noticed that while I do add comments to my code, they are not comprehensive enough. Will also be addressed in future projects.
+<h3> <strike> Poor GitHub Commit Practices </strike> </h3>
+See Notes
+
+<h2> Notes </h2>
+<h3> GitHub Commits </h3>
+Larger number of commits compared to previous projects stems from better practices / documentation regarding commits. <br>
+No longer will I dump every change into one commit! I will target any issues from previous commits with greater precision forevermore!
