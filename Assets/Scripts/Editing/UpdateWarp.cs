@@ -18,6 +18,9 @@ public class UpdateWarp : MonoBehaviour
     public string inDirection;
     public string outDirection;
 
+    [Header("New Camera Position")]
+    public Vector3 cameraPos;
+
     public bool update;
 
     private void OnValidate()
@@ -31,6 +34,11 @@ public class UpdateWarp : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        // Disable sprite renderers so that they are essentially invisible warps
+        Rec_DisableSpriteRenderer(transform);
+    }
     private void UpdateLetter()
     {
         switch (letter)
@@ -115,6 +123,13 @@ public class UpdateWarp : MonoBehaviour
         return outDirection;
     }
 
+    private void Rec_DisableSpriteRenderer(Transform t)
+    {
+        // if has sprite renderer component, disable
+        if (transform.TryGetComponent(out SpriteRenderer sprite)) { sprite.enabled = false; }
+        // If there are children, try to disable sprite renderer in them
+        if (t.childCount > 0) { foreach (Transform child in t) { Rec_DisableSpriteRenderer(child); } }
+    }
 
     private void ThrowLettersError()
     {
