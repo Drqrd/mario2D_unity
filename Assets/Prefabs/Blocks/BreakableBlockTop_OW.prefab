@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8964603695508358900}
   - component: {fileID: 6456873183162781471}
   m_Layer: 0
-  m_Name: BreakableBlockTop
+  m_Name: BreakableBlockTop_OW
   m_TagString: Breakable Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
