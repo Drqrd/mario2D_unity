@@ -59,6 +59,6 @@ public class AudioController : MonoBehaviour
     // Accessible method to play a sound
     public static void PlaySound(string name)
     {
-        GameObject.Find(name).GetComponent<AudioSource>().Play();
+        GameObject.Find("AudioController").transform.Find(name).GetComponent<AudioSource>().Play();
     }
 }
