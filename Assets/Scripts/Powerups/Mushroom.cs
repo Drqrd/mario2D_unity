@@ -31,6 +31,12 @@ public class Mushroom : Powerup, PowerupInterface
 
         if (GetRigidbody().velocity.y == 0) { alreadyJumping = false; }
     }
+
+    public float MoveDirection
+    {
+        get { return moveDirection; }
+        set { moveDirection = value; }
+    }
     
     public void RevealPowerup()
     {
@@ -68,11 +74,11 @@ public class Mushroom : Powerup, PowerupInterface
             // Add to score
             Score.AddScore(GetScore());
 
-            // Disable game object
-            transform.gameObject.SetActive(false);
-
             // if small mario, make large mario
             if (reference.GetState() == "Small Mario") { reference.SetState("Large Mario"); }
+
+            // Disable game object
+            transform.gameObject.SetActive(false);
         }
     }
 
