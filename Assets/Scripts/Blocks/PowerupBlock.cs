@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class PowerupBlock : Block, BlockInterface
 {
-    private Sprite hitSprite;
-
-    private void Start()
-    {
-        hitSprite = (Sprite)Resources.Load("Sprites/Hit_OW", typeof(Sprite));
-    }
+    public Sprite hitSprite;
 
     public void Hit(Collision collision)
     {
@@ -26,10 +21,5 @@ public class PowerupBlock : Block, BlockInterface
     public bool GetIsBumping()
     {
         return isBumping;
-    }
-
-    public Sprite GetHitSprite()
-    {
-        return hitSprite;
     }
 }
