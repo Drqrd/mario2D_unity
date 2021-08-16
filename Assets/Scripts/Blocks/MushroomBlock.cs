@@ -12,7 +12,7 @@ public class MushroomBlock : PowerupBlock, BlockInterface
             SetFirstHit(true);
             AudioController.PlaySound("Powerup Appears");
             GetComponent<Animator>().enabled = false;
-            GetComponent<SpriteRenderer>().sprite = GetHitSprite();
+            GetComponent<SpriteRenderer>().sprite = hitSprite;
             StartCoroutine(Bump());
             SpawnMushroom();
         }
