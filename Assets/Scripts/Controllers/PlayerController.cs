@@ -283,14 +283,17 @@ public class PlayerController : MonoBehaviour
         yield return new WaitUntil(() => b.Contains(rigidBody.position));
         adjustWarpPosition = false;
 
-        // Time between pipe transition
-        yield return new WaitForSeconds(pauseBetweenWarps);
+        // Time between pipe transition, plus camera work that happens inbetween
+        yield return new WaitForSeconds(pauseBetweenWarps / 2f);
+        Camera.main.backgroundColor = warp.parent.GetComponent<UpdateWarp>().cameraBackgroundColor.color;
+        Camera.main.transform.position = warp.parent.GetComponent<UpdateWarp>().CameraPos;
+        yield return new WaitForSeconds(pauseBetweenWarps / 2f);
 
         // Get destination
         Vector3 destination = warp.parent.GetChild(1).transform.position;
 
         // Actually warp the player, depending on direction so player spawns in pipe
-        switch (warp.parent.GetComponent<UpdateWarp>().GetOutDirection())
+        switch (warp.parent.GetComponent<UpdateWarp>().outDirection)
         {
             case "Up":
                 rigidBody.position = new Vector3(destination.x, destination.y - 2f, destination.z);
