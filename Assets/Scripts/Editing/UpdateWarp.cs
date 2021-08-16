@@ -4,24 +4,37 @@ using UnityEngine;
 
 public class UpdateWarp : MonoBehaviour
 {
-    private const float dist = 1.25f;
+    // Distance of arrow from letter
+    private const float dist = .75f;
 
-    private string[] letters = { "A", "B", "C", "D", "E", "F", "G", "H" };
-    private string[] directions = { "Up", "Down", "Left", "Right" };
-
+    // Holds the sprites for the letters
     public Sprite[] sprites;
 
+    // Changes letter based on editor input
     [Header("Letter")]
     public string letter;
 
+    // Changes direction of arrows based on editor input
     [Header("Direction")]
     public string inDirection;
     public string outDirection;
 
-    [Header("New Camera Position")]
-    public Vector3 cameraPos;
+    // Variables that change in camera when teleported
+    [Header("Camera Parameters")]
+    public Material cameraBackgroundColor;
+    private Vector3 cameraPos;
 
+    // For editing purposes
     public bool update;
+
+    // Camera position that camera will move to in warp function
+    public Vector3 CameraPos
+    {
+        get { return cameraPos; }
+        set { cameraPos = value; }
+    }
+
+
 
     private void OnValidate()
     {
@@ -38,7 +51,13 @@ public class UpdateWarp : MonoBehaviour
     {
         // Disable sprite renderers so that they are essentially invisible warps
         Rec_DisableSpriteRenderer(transform);
+
+        // Gets and adjusts desired camera position
+        CameraPos = transform.GetChild(2).position;
+        CameraPos = new Vector3(CameraPos.x, CameraPos.y, CameraPos.z - 10f);
     }
+
+    // Changes the letters of the warp, only if A-H, else throw error
     private void UpdateLetter()
     {
         switch (letter)
@@ -89,11 +108,14 @@ public class UpdateWarp : MonoBehaviour
         }
     }
 
+    // Changes the arrow position and rotation to reflect editor settings
     private void UpdateDirection(string i_o)
     {
+        // So i can use function for in or out
         string dir = i_o == "In" ? inDirection : outDirection;
         GameObject obj = i_o == "In" ? transform.Find("Warp In").GetChild(0).gameObject : transform.Find("Warp Out").GetChild(0).gameObject;
 
+        // Self explanatory part, if up, down, left or right change arrow pos and rotation, else throw error in editor
         switch (dir)
         {
             case "Up":
@@ -118,24 +140,22 @@ public class UpdateWarp : MonoBehaviour
         }
     }
 
-    public string GetOutDirection()
-    {
-        return outDirection;
-    }
-
+    // Recursive function for disabling sprite renderers
     private void Rec_DisableSpriteRenderer(Transform t)
     {
         // if has sprite renderer component, disable
-        if (transform.TryGetComponent(out SpriteRenderer sprite)) { sprite.enabled = false; }
+        if (t.TryGetComponent(out SpriteRenderer sprite)) { sprite.enabled = false; }
         // If there are children, try to disable sprite renderer in them
         if (t.childCount > 0) { foreach (Transform child in t) { Rec_DisableSpriteRenderer(child); } }
     }
 
+    // Editor error message 
     private void ThrowLettersError()
     {
         Debug.Log("ERR: Letter has to be a letter A-H");
     }
 
+    // Editor error message
     private void ThrowDirectionError(string a)
     {
         Debug.Log("ERR: Direction needs to be up, down, left or right: " + a);
