@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBumping: 0
+  hitSprite: {fileID: -812047438804240256, guid: e1db499e735cb61418059a1473eb3f35, type: 3}
   child: {fileID: 6973406625582699097}
 --- !u!212 &82628636025524136
 SpriteRenderer:
