@@ -12,8 +12,8 @@ public class Mushroom : Powerup, PowerupInterface
     private void Start()
     {
         // Set the rigidbody, collider and localPosition of the powerup
-        SetRigidbody(GetComponent<Rigidbody>());
-        SetBoxCollider(GetComponent<BoxCollider>());
+        Rb = GetComponent<Rigidbody>();
+        Bc = GetComponent<BoxCollider>();
         SetTransform(transform);
         SetEmergedPos(transform.localPosition.y + 1f);
 
@@ -23,29 +23,19 @@ public class Mushroom : Powerup, PowerupInterface
 
     private void FixedUpdate()
     {
-        if (GetFinishedEmerging())
+        if (FinishedEmerging)
         {
             if (!executedOnce) { InitialWork(); }
-            GetRigidbody().velocity = new Vector3(moveSpeed * moveDirection, GetRigidbody().velocity.y, 0f);
+            Rb.velocity = new Vector3(moveSpeed * moveDirection, Rb.velocity.y, 0f);
         }
 
-        if (GetRigidbody().velocity.y == 0) { alreadyJumping = false; }
+        if (Rb.velocity.y == 0) { alreadyJumping = false; }
     }
 
     public float MoveDirection
     {
         get { return moveDirection; }
         set { moveDirection = value; }
-    }
-    
-    public void RevealPowerup()
-    {
-        StartCoroutine(EmergeFromBlock());
-    }
-
-    public void HidePowerup()
-    {
-        transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, 1f);
     }
 
     public void InitialWork()
@@ -57,9 +47,9 @@ public class Mushroom : Powerup, PowerupInterface
         transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, 0f);
 
         // other stuff to do once position is corrected
-        GetBoxCollider().enabled = true;
-        GetRigidbody().useGravity = true;
-        SetFinishedEmerging(true);
+        Bc.enabled = true;
+        Rb.useGravity = true;
+        FinishedEmerging = true;
 
         executedOnce = true;
     }
@@ -92,7 +82,7 @@ public class Mushroom : Powerup, PowerupInterface
                 if (!alreadyJumping)
                 {
                     alreadyJumping = true;
-                    GetRigidbody().velocity = new Vector3(GetRigidbody().velocity.x, 10f, 0f);
+                    Rb.velocity = new Vector3(Rb.velocity.x, 10f, 0f);
                 }
             }
         }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Powerup : MonoBehaviour
 {
     private Rigidbody rb;
-    private BoxCollider bc; 
+    private BoxCollider bc;
     new private Transform transform;
     private float emergeSpeed;
     private bool finishedEmerging;
@@ -27,32 +27,22 @@ public class Powerup : MonoBehaviour
     }
 
     // Get / Set for rigidbody
-    public void SetRigidbody(Rigidbody r)
+    public Rigidbody Rb
     {
-        rb = r;
-    }
-    public Rigidbody GetRigidbody()
-    {
-        return rb;
+        get { return rb; }
+        set { rb = value; }
     }
 
     // Get / Set for box collider
-    public void SetBoxCollider(BoxCollider c)
+    public BoxCollider Bc
     {
-        bc = c;
+        get { return bc; }
+        set { bc = value; }
     }
-    public BoxCollider GetBoxCollider()
+    public bool FinishedEmerging
     {
-        return bc;
-    }
-
-    public void SetFinishedEmerging(bool val)
-    {
-        finishedEmerging = val;
-    }
-    public bool GetFinishedEmerging()
-    {
-        return finishedEmerging;
+        get { return finishedEmerging; }
+        set { finishedEmerging = value; }
     }
 
     public void SetTransform(Transform t)
@@ -68,5 +58,15 @@ public class Powerup : MonoBehaviour
     public int GetScore()
     {
         return powerupScore;
+    }
+   
+    public void HidePowerup()
+    {
+        transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, 1f);
+    }
+
+    public void RevealPowerup()
+    {
+        StartCoroutine(EmergeFromBlock());
     }
 }
