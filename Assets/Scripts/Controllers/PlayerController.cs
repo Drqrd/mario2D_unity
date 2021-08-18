@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
     private bool isInvincible = false;
     private bool isWarping = false;
     private float powerUpTime = 1f;
+    private float invincibilityTime = 6f;
 
     // For timing
     private float bumpDuration = .2f;
@@ -77,7 +78,6 @@ public class PlayerController : MonoBehaviour
         // Adjust gravity
         Physics.gravity = yGravity;
     }
-
 
     // Physics based movement
     private void FixedUpdate()
@@ -357,6 +357,15 @@ public class PlayerController : MonoBehaviour
     private void Death()
     {
         Debug.Log("Died");
+    }
+
+    public IEnumerator Invincibility()
+    {
+        isInvincible = true;
+        Debug.Log("Invincibility On");
+        yield return new WaitForSeconds(invincibilityTime);
+        Debug.Log("Invincibility Off");
+        isInvincible = false;
     }
 
     // Detects collision side, only for collision enter
