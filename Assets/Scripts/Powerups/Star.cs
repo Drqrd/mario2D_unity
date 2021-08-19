@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Star : Powerup
+public class Star : Powerup, PowerupInterface
 {
     private float moveDirection;
     private float moveSpeed = 3f;
@@ -11,6 +11,7 @@ public class Star : Powerup
 
     private void Start()
     {
+        jumpVelocity *= 8f;
         Rb = GetComponent<Rigidbody>();
         Bc = GetComponent<BoxCollider>(); 
         SetTransform(transform);
@@ -50,9 +51,28 @@ public class Star : Powerup
         executedOnce = true;
     }
 
+    public void RevealPowerup()
+    {
+        StartCoroutine(EmergeFromBlock());
+    }
+
+    Vector2 DetectCollisionSide(Collision col)
+    {
+        float angle = Vector3.Angle(col.contacts[0].normal, Vector3.up);
+        if (Mathf.Approximately(angle, 0f)) { return Vector2.up; }
+        if (Mathf.Approximately(angle, 180f)) { return Vector2.down; }
+        if (Mathf.Approximately(angle, 90f))
+        {
+            Vector3 cross = Vector3.Cross(Vector3.forward, col.contacts[0].normal);
+            if (cross.y > 0f) { return Vector2.left; }
+            else { return Vector2.right; }
+        }
+        return Vector2.zero;
+    }
+
     public void OnCollisionEnter(Collision collision)
     {
-        moveDirection = -moveDirection;
+        Vector2 side = DetectCollisionSide(collision);
         if (collision.gameObject.name == "Player")
         {
             PlayerController reference = collision.transform.GetComponent<PlayerController>();
@@ -68,5 +88,6 @@ public class Star : Powerup
             // Disable game object
             transform.gameObject.SetActive(false);
         }
+        if (side == Vector2.left || side == Vector2.right) { moveDirection = -moveDirection; }
     }
 }
