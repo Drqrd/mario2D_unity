@@ -1,37 +1,25 @@
 fileFormatVersion: 2
-guid: 19610c11c1d68f84ca936c17bd15230d
+guid: 511ee7ab27483294db64fa77ea7d32a1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7455690918411647821
-    second: Pipe_OW_0
+      213: 405541816925720445
+    second: Castle_OW_0
   - first:
-      213: -1664719430740534134
-    second: Pipe_OW_1
+      213: -7442989327196536010
+    second: Castle_OW_1
   - first:
-      213: -8508075280918991777
-    second: Pipe_OW_2
+      213: -2928348673475519145
+    second: Castle_OW_2
   - first:
-      213: -2332834297877799193
-    second: Pipe_OW_3
+      213: 4536276903530232282
+    second: Castle_OW_3
   - first:
-      213: 1207476202213288378
-    second: Pipe_OW_4
+      213: -2380252494908450540
+    second: Castle_OW_4
   - first:
-      213: -6543503278728714820
-    second: Pipe_OW_5
-  - first:
-      213: -5105620717532071764
-    second: Pipe_OW_6
-  - first:
-      213: 6693746544797109616
-    second: Pipe_OW_7
-  - first:
-      213: 570093331491234271
-    second: Pipe_OW_8
-  - first:
-      213: -4847864916180749649
-    second: Pipe_OW_9
+      213: 6239059047580349118
+    second: Castle_OW_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -72,7 +60,7 @@ TextureImporter:
   lightmap: 0
   compressionQuality: 50
   spriteMode: 2
-  spriteExtrude: 0
+  spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
@@ -133,7 +121,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Pipe_OW_0
+      name: Castle_OW_0
       rect:
         serializedVersion: 2
         x: 1
@@ -141,20 +129,62 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d4b380b636fe77760800000000000000
-      internalID: 7455690918411647821
+      spriteID: d7f8c634226c0a500800000000000000
+      internalID: 405541816925720445
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Pipe_OW_1
+      name: Castle_OW_1
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 18
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6334d6d34a035b890800000000000000
+      internalID: -7442989327196536010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Castle_OW_2
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 18
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75d5103856a6c57d0800000000000000
+      internalID: -2928348673475519145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Castle_OW_3
       rect:
         serializedVersion: 2
         x: 1
@@ -162,41 +192,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a8c15007f7ab5e8e0800000000000000
-      internalID: -1664719430740534134
+      spriteID: ad97abd3fc714fe30800000000000000
+      internalID: 4536276903530232282
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Pipe_OW_2
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 18
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f5caa861c9e3de980800000000000000
-      internalID: -8508075280918991777
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pipe_OW_3
+      name: Castle_OW_4
       rect:
         serializedVersion: 2
         x: 18
@@ -204,41 +213,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7ee5523e09b10afd0800000000000000
-      internalID: -2332834297877799193
+      spriteID: 4199e3d87f4a7fed0800000000000000
+      internalID: -2380252494908450540
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Pipe_OW_4
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 18
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ab929ab5531d1c010800000000000000
-      internalID: 1207476202213288378
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pipe_OW_5
+      name: Castle_OW_5
       rect:
         serializedVersion: 2
         x: 35
@@ -246,98 +234,14 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cb565ccdf6ec035a0800000000000000
-      internalID: -6543503278728714820
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pipe_OW_6
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 18
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ca830a512013529b0800000000000000
-      internalID: -5105620717532071764
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pipe_OW_7
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 1
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 07d412b7407f4ec50800000000000000
-      internalID: 6693746544797109616
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pipe_OW_8
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 18
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fd1aa505dd069e700800000000000000
-      internalID: 570093331491234271
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Pipe_OW_9
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 0
-        width: 16
-        height: 17
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fa2b7f73b8ce8bcb0800000000000000
-      internalID: -4847864916180749649
+      spriteID: eb2b6b7d527959650800000000000000
+      internalID: 6239059047580349118
       vertices: []
       indices: 
       edges: []
@@ -345,7 +249,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 54170145335f4134ba3d0ccbbfde9f29
+    spriteID: ae994990dc6001e4994dec7f2ae239f4
     internalID: 0
     vertices: []
     indices: 
