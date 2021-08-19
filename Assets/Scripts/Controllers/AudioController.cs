@@ -61,4 +61,10 @@ public class AudioController : MonoBehaviour
     {
         GameObject.Find("AudioController").transform.Find(name).GetComponent<AudioSource>().Play();
     }
+
+    // Accessible method to stop a sound
+    public static void StopSound(string name)
+    {
+        GameObject.Find("AudioController").transform.Find(name).GetComponent<AudioSource>().Stop();
+    }
 }
