@@ -14,12 +14,7 @@ public class MushroomBlock : PowerupBlock, BlockInterface
             GetComponent<Animator>().enabled = false;
             GetComponent<SpriteRenderer>().sprite = hitSprite;
             StartCoroutine(Bump());
-            SpawnMushroom();
+            SpawnPowerup();
         }
-    }
-
-    public void SpawnMushroom()
-    {
-        transform.GetChild(0).GetComponent<PowerupInterface>().RevealPowerup();
     }
 }

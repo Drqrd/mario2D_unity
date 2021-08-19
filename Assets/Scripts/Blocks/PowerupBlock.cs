@@ -22,4 +22,9 @@ public class PowerupBlock : Block, BlockInterface
     {
         return isBumping;
     }
+
+    public void SpawnPowerup()
+    {
+        transform.GetChild(0).GetComponent<PowerupInterface>().RevealPowerup();
+    }
 }
