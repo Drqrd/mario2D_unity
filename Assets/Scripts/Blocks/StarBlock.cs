@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StarBlock : MonoBehaviour
+public class StarBlock : PowerupBlock, BlockInterface
 {
-    // Start is called before the first frame update
-    void Start()
+    // Causes hit and spawns powerup
+    new public void Hit(Collision collision)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (!GetFirstHit())
+        {
+            SetFirstHit(true);
+            AudioController.PlaySound("Powerup Appears");
+            GetComponent<SpriteRenderer>().sprite = hitSprite;
+            StartCoroutine(Bump());
+            SpawnPowerup();
+        }
     }
 }
