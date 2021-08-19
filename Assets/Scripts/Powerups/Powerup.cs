@@ -64,9 +64,4 @@ public class Powerup : MonoBehaviour
     {
         transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, 1f);
     }
-
-    public void RevealPowerup()
-    {
-        StartCoroutine(EmergeFromBlock());
-    }
 }

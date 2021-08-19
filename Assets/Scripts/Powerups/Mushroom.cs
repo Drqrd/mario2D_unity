@@ -53,6 +53,10 @@ public class Mushroom : Powerup, PowerupInterface
 
         executedOnce = true;
     }
+    public void RevealPowerup()
+    {
+        StartCoroutine(EmergeFromBlock());
+    }
 
     public void OnCollisionEnter(Collision collision)
     {
