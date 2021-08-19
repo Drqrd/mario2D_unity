@@ -361,9 +361,10 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator Invincibility()
     {
+        float time = Time.time;
         isInvincible = true;
         Debug.Log("Invincibility On");
-        yield return new WaitForSeconds(invincibilityTime);
+        yield return new WaitUntil(()=> Time.time >= time + invincibilityTime);
         Debug.Log("Invincibility Off");
         isInvincible = false;
     }
@@ -418,14 +419,11 @@ public class PlayerController : MonoBehaviour
             isGrounded = true;
             if (tag == "Enemy")
             {
-                if (collision.gameObject.name.Contains("Goomba"))
-                {
-                    StartCoroutine(collision.gameObject.GetComponent<Goomba>().DeathTimer("Stomp"));
-                    Overlay.AddToScores(Score.GetStompedEnemyPoints(stompMultiplier));
-                    if (stompMultiplier < MAX_STOMP_MULTIPLIER) { stompMultiplier++; }
-                    if (Input.GetKey(jumpKey)) { Jump(); }
-                    else { Bounce(); }
-                }
+                StartCoroutine(collision.gameObject.GetComponent<EnemyInterface>().DeathTimer("Stomp"));
+                Overlay.AddToScores(Score.GetStompedEnemyPoints(stompMultiplier));
+                if (stompMultiplier < MAX_STOMP_MULTIPLIER) { stompMultiplier++; }
+                if (Input.GetKey(jumpKey)) { Jump(); }
+                else { Bounce(); }
             }
             else { stompMultiplier = 0; }
         }
