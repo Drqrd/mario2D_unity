@@ -98,7 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isBumping: 0
   hitSprite: {fileID: -812047438804240256, guid: e1db499e735cb61418059a1473eb3f35, type: 3}
-  player: {fileID: 0}
+  player: {fileID: 5216731551984354708, guid: 18473f154f9119e41b5f85d6acc99eee, type: 3}
 --- !u!1001 &8419304760345486185
 PrefabInstance:
   m_ObjectHideFlags: 0
