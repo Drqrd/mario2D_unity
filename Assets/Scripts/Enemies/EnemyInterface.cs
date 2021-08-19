@@ -5,4 +5,6 @@ using UnityEngine;
 public interface EnemyInterface
 {
     public void Enable();
+
+    public IEnumerator DeathTimer(string slainBy = "NaN");
 }
