@@ -18,7 +18,7 @@ public class WarpCameraBounds : MonoBehaviour
     // View boundary box
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
+        Gizmos.color = Color.green;
         Vector2 border = CalculateThreshold();
         Gizmos.DrawWireCube(transform.position, new Vector3(border.x * 2, border.y * 2, 1f));
     }
