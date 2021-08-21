@@ -10461,6 +10461,7 @@ GameObject:
   - component: {fileID: 1681851525}
   - component: {fileID: 1681851524}
   - component: {fileID: 1681851523}
+  - component: {fileID: 1681851527}
   m_Layer: 0
   m_Name: Koopa
   m_TagString: Enemy
@@ -10537,7 +10538,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 5678549701166901140, guid: 439aec9f6741e9d4f9770009f702b523, type: 3}
+  m_Sprite: {fileID: 5678549701166901140, guid: 52553e3d27ddcd542a9c506398d1596c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -10562,6 +10563,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1681851527
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681851522}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ee73098f252833442be3f151be09a663, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &1681880839
 PrefabInstance:
   m_ObjectHideFlags: 0
