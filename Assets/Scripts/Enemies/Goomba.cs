@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Goomba : Enemy, EnemyInterface
 {
-    private Rigidbody rb;
-    private Animator anim;
     private const int fireScore = 100, stompScore = 200;
 
     private void Start()
