@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 439aec9f6741e9d4f9770009f702b523
+guid: 52553e3d27ddcd542a9c506398d1596c
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -8,6 +8,18 @@ TextureImporter:
   - first:
       213: 56185185055555074
     second: Koopa_OW_1
+  - first:
+      213: 193599696702282455
+    second: Koopa_OW_2
+  - first:
+      213: -5010445434470070354
+    second: Koopa_OW_3
+  - first:
+      213: 2089239214332019898
+    second: Koopa_OW_4
+  - first:
+      213: -89548241649725366
+    second: Koopa_OW_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -117,7 +129,7 @@ TextureImporter:
         width: 16
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -138,7 +150,7 @@ TextureImporter:
         width: 16
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -150,10 +162,94 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Koopa_OW_2
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 1
+        width: 16
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7da109ef5edcfa200800000000000000
+      internalID: 193599696702282455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Koopa_OW_3
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 1
+        width: 16
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea70fef7c62577ab0800000000000000
+      internalID: -5010445434470070354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Koopa_OW_4
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 1
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab483150ff77efc10800000000000000
+      internalID: 2089239214332019898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Koopa_OW_5
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 1
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a401532495cd1cef0800000000000000
+      internalID: -89548241649725366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: dc07b643e0600314187a818aa1f925e9
+    spriteID: b1ad0d33ed9fd744ba0e29d721a1be28
     internalID: 0
     vertices: []
     indices: 
