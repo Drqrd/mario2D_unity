@@ -419,6 +419,7 @@ public class PlayerController : MonoBehaviour
             isGrounded = true;
             if (tag == "Enemy")
             {
+                if (tag.Contains("Koopa")) { collision.gameObject.GetComponent<Koopa>().ShellWasHit(); }
                 StartCoroutine(collision.gameObject.GetComponent<EnemyInterface>().DeathTimer("Stomp"));
                 Overlay.AddToScores(Score.GetStompedEnemyPoints(stompMultiplier));
                 if (stompMultiplier < MAX_STOMP_MULTIPLIER) { stompMultiplier++; }
