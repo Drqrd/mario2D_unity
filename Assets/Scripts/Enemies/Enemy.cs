@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private Rigidbody rb;
-    private Animator anim;
+    protected Rigidbody rb;
+    protected Animator anim;
     protected float moveSpeed = -1.5f;
     protected float deathDuration = .2f;
     protected bool dyingToStomp = false;
