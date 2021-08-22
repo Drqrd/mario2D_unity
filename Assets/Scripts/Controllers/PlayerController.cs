@@ -397,8 +397,8 @@ public class PlayerController : MonoBehaviour
             // If in air, stop
             if (rigidBody.velocity.y != 0) { stopXVelocity = true; stopYVelocity = true; }
 
-            // Play bump sound if on ground
-            if (rigidBody.velocity.y == 0) { if (!hasBumped) { AudioController.PlaySound("Bump"); StartCoroutine(BumpTimer()); } }
+            // Play bump sound if on ground and not contacting enemy
+            if (rigidBody.velocity.y == 0 && tag != "Enemy") { if (!hasBumped) { AudioController.PlaySound("Bump"); StartCoroutine(BumpTimer()); } }
         }
 
         // If you hit block, stop jump
@@ -419,19 +419,48 @@ public class PlayerController : MonoBehaviour
             isGrounded = true;
             if (tag == "Enemy")
             {
-                if (tag.Contains("Koopa")) { collision.gameObject.GetComponent<Koopa>().ShellWasHit(); }
-                StartCoroutine(collision.gameObject.GetComponent<EnemyInterface>().DeathTimer("Stomp"));
-                Overlay.AddToScores(Score.GetStompedEnemyPoints(stompMultiplier));
-                if (stompMultiplier < MAX_STOMP_MULTIPLIER) { stompMultiplier++; }
-                if (Input.GetKey(jumpKey)) { Jump(); }
-                else { Bounce(); }
+                if (collision.gameObject.name.Contains("Koopa"))
+                {
+                    if (collision.gameObject.GetComponent<Koopa>().IsInShell)
+                    {
+                        AudioController.PlaySound("Kick");
+                        collision.gameObject.GetComponent<Koopa>().ShellWasHit();
+                    }
+                    else
+                    {
+                        StartCoroutine(collision.gameObject.GetComponent<EnemyInterface>().DeathTimer("Stomp"));
+                        Overlay.AddToScores(Score.GetStompedEnemyPoints(stompMultiplier));
+                        if (stompMultiplier < MAX_STOMP_MULTIPLIER) { stompMultiplier++; }
+                        if (Input.GetKey(jumpKey)) { Jump(); }
+                        else { Bounce(); }
+                    }
+                }
+                else
+                {
+                    StartCoroutine(collision.gameObject.GetComponent<EnemyInterface>().DeathTimer("Stomp"));
+                    Overlay.AddToScores(Score.GetStompedEnemyPoints(stompMultiplier));
+                    if (stompMultiplier < MAX_STOMP_MULTIPLIER) { stompMultiplier++; }
+                    if (Input.GetKey(jumpKey)) { Jump(); }
+                    else { Bounce(); }
+                }
             }
             else { stompMultiplier = 0; }
         }
 
         if (direction != Vector2.up)
         {
-            if (tag == "Enemy") { DamageMario(); }
+            if (tag == "Enemy") 
+            {
+                if (collision.gameObject.name.Contains("Koopa") && !collision.gameObject.GetComponent<Koopa>().ShellIsMoving && collision.gameObject.GetComponent<Koopa>().IsInShell)
+                {
+                    AudioController.PlaySound("Kick");
+                    collision.gameObject.GetComponent<Koopa>().ShellWasHit();
+                }
+                else
+                {
+                    DamageMario();
+                }
+            }
         }
     }
 
