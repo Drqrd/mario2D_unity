@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
 
     [Header("Camera Bounds")]
     public GameObject leftBounds;
+    public GameObject leftTrigger;
     public GameObject rightBounds;
     public GameObject bottomBounds;
 
@@ -67,7 +68,8 @@ public class CameraController : MonoBehaviour
     private void AdjustLeftBoundPosition()
     {
         float horizontalExtent = Camera.main.orthographicSize * Screen.width / Screen.height;
-        leftBounds.transform.position = new Vector3(transform.position.x - horizontalExtent / 2f - .5f, leftBounds.transform.position.y, 0f);
+        leftBounds.transform.position = new Vector3(transform.position.x - horizontalExtent / 2f - 1.5f, leftBounds.transform.position.y, 0f);
+        leftTrigger.transform.position = new Vector3(leftBounds.transform.position.x - 1.1f, leftBounds.transform.position.y, 0f);
     }
 
     
