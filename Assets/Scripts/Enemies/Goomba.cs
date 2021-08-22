@@ -6,11 +6,6 @@ public class Goomba : Enemy, EnemyInterface
 {
     private const int fireScore = 100, stompScore = 200;
 
-    private void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-        anim = GetComponent<Animator>();
-    }
     private void FixedUpdate()
     {
         if (isEnabled)
@@ -41,7 +36,7 @@ public class Goomba : Enemy, EnemyInterface
         else if (slainBy == "Fireball")
         {
             dyingToFire = true;
-            AudioController.PlaySound("Bump");
+            AudioController.PlaySound("Kick");
             yield return new WaitForSeconds(deathDuration);
             gameObject.SetActive(false);
         }
