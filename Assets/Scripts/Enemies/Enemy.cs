@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     protected Rigidbody rb;
+    protected BoxCollider bc;
     protected Animator anim;
     protected float moveSpeed = -1.5f;
     protected float deathDuration = .2f;
@@ -12,21 +13,12 @@ public class Enemy : MonoBehaviour
     protected bool dyingToFire = false;
     protected bool isEnabled = false, executedFireAnimation = false;
 
-    private void Start()
+    protected void Start()
     {
         rb = GetComponent<Rigidbody>();
+        bc = GetComponent<BoxCollider>();
         anim = GetComponent<Animator>();
     }
-    private void FixedUpdate()
-    {
-        if (isEnabled)
-        {
-            // If not dying, move in moveSpeed direction
-            if (!dyingToStomp && !dyingToFire) { rb.velocity = new Vector3(moveSpeed, rb.velocity.y, 0f); }
-        }
-    }
-
-
 
     // Flip the sprite upside down, make it jump a little and turn off its collision
     protected void DiedToFireAnimation()
@@ -47,6 +39,11 @@ public class Enemy : MonoBehaviour
         {
             isEnabled = true;
         }
+    }
+
+    public void Disable()
+    {
+        gameObject.SetActive(false);
     }
 
     protected bool SideCollision(Collision col)
